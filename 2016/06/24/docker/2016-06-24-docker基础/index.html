@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="Neal" />
+
+
+
+<meta name="description" content="docker越来越流行，这里介绍一点关于docker的基础知识。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="docker基础">
+<meta property="og:url" content="http://yoursite.com/2016/06/24/docker/2016-06-24-docker%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="Neal记录">
+<meta property="og:description" content="docker越来越流行，这里介绍一点关于docker的基础知识。">
+<meta property="og:locale">
+<meta property="og:image" content="http://yoursite.com/images/2016-06-24-docker-01.png">
+<meta property="article:published_time" content="2016-06-24T05:40:00.000Z">
+<meta property="article:modified_time" content="2020-08-08T15:29:11.653Z">
+<meta property="article:author" content="Neal">
+<meta property="article:tag" content="docker基础">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/2016-06-24-docker-01.png">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="Neal记录" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/img/snail.png">
+
+
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>docker基础 | Neal记录</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: false,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.0.0"></head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/snail.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/"></a></h1>
+        </hgroup>
+
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/MIXIN/" rel="tag">MIXIN</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/base64/" rel="tag">base64</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/decode/" rel="tag">decode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/define/" rel="tag">define</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker%E5%9F%BA%E7%A1%80/" rel="tag">docker基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/encode/" rel="tag">encode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gitlab/" rel="tag">gitlab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gitlab%E9%83%A8%E7%BD%B2/" rel="tag">gitlab部署</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hash/" rel="tag">hash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/logs-del/" rel="tag">logs del</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/options/" rel="tag">options</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/property%E5%AE%9E%E7%8E%B0/" rel="tag">property实现</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python%E6%A0%87%E5%87%86%E5%BA%93%EF%BC%8Cos%E6%A8%A1%E5%9D%97/" rel="tag">python标准库，os模块</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell%EF%BC%8Cpython/" rel="tag">shell，python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tornado/" rel="tag">tornado</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/with%E8%AF%AD%E6%B3%95/" rel="tag">with语法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%87%BD%E6%95%B0/" rel="tag">函数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%97%E8%A1%A8%E8%A7%A3%E6%9E%90/" rel="tag">列表解析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%97%E8%A1%A8%EF%BC%8C%E5%85%83%E7%BB%84/" rel="tag">列表，元组</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8F%8C%E7%AB%AF%E9%98%9F%E5%88%97%EF%BC%8C%E7%8E%AF%E7%8A%B6%E9%98%9F%E5%88%97/" rel="tag">双端队列，环状队列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8F%8D%E5%B0%84/" rel="tag">反射</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%84%E7%90%86%E8%AF%B7%E6%B1%82/" rel="tag">处理请求</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B%EF%BC%8Cevent%E7%89%B9%E6%80%A7/" rel="tag">多线程，event特性</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BB%A7%E6%89%BF%EF%BC%8CMRO/" rel="tag">多继承，MRO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/" rel="tag">字符串</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%82%E5%B8%B8/" rel="tag">异常</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8F%8F%E8%BF%B0%E5%99%A8/" rel="tag">描述器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD%EF%BC%8C%E5%BE%AA%E7%8E%AF/" rel="tag">条件判断，循环</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%88/" rel="tag">栈</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%88%E8%BF%90%E7%94%A8%EF%BC%8C%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%A7%A3%E6%9E%90/" rel="tag">栈运用，表达式解析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A8%A1%E5%9D%97%E5%8C%96/" rel="tag">模块化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%B3%BB%E7%BB%9F%E5%88%9D%E5%A7%8B%E5%8C%96/" rel="tag">系统初始化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E7%A8%8B%EF%BC%8Ccondition/" rel="tag">线程，condition</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%A7%E6%89%BF/" rel="tag">继承</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E5%BB%BACA/" rel="tag">自建CA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A3%85%E9%A5%B0%E5%99%A8/" rel="tag">装饰器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A3%85%E9%A5%B0%E5%99%A8%EF%BC%8Cdecorator/" rel="tag">装饰器，decorator</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BF%94%E5%9B%9E%E8%AF%B7%E6%B1%82/" rel="tag">返回请求</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%85%8D%E7%BD%AE%E8%A7%A3%E6%9E%90/" rel="tag">配置解析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%93%BE%E8%A1%A8/" rel="tag">链表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%98%9F%E5%88%97/" rel="tag">队列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" rel="tag">面向对象</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%EF%BC%8C%E5%B0%81%E8%A3%85/" rel="tag">面向对象，封装</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95%EF%BC%8C%E7%B1%BB%E8%A3%85%E9%A5%B0%E5%99%A8%EF%BC%8C%E5%8D%95%E4%BE%8B/" rel="tag">魔术方法，类装饰器，单例</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">专注于linux</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页"></a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/snail.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页"></a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-docker/2016-06-24-docker基础" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/06/24/docker/2016-06-24-docker%E5%9F%BA%E7%A1%80/" class="article-date">
+      <time datetime="2016-06-24T05:40:00.000Z" itemprop="datePublished">2016-06-24</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      docker基础
+    </h1>
+  
+
+        <!-- 开始添加字数统计-->
+        
+         <!-- 添加完成 -->
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/%E8%99%9A%E6%8B%9F%E5%8C%96/">虚拟化</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker%E5%9F%BA%E7%A1%80/" rel="tag">docker基础</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>docker越来越流行，这里介绍一点关于docker的基础知识。</p>
+<a id="more"></a>
+<h1>Docker基础篇</h1>
+<ul>
+<li>[x] docker简介</li>
+<li>[x] 安装docker服务</li>
+</ul>
+<h2 id="docker简介">docker简介</h2>
+<blockquote>
+<p>Docker是一个开源的应用容器引擎，让开发者可以打包他们的应用以及依赖包到一个可移植的容器中，然后发布到任何流行的 Linux 机器上，也可以实现虚拟化。容器是完全使用沙箱机制，相互之间不会有任何接口。-- 百度百科</p>
+</blockquote>
+<p><img src="/images/2016-06-24-docker-01.png" alt="docker_vs_vm"></p>
+<p>上图来自docker<a target="_blank" rel="noopener" href="https://www.docker.com/what-docker#/VM">官网</a>截图，整体上说明了传统的虚拟机与docker的区别，传统的虚拟机包括应用程序，必要的二进制文件和库文件以及一个完整的操作系统，这样一个虚拟机文件会有上GB的大小。而docker容器则包含应用程序以及依赖包，但容器间共享操作系统的kernel,在宿主机上以一个进程体现一个docker容器，各个容器间是相互隔离的，容器不依赖任何特定的基础设施，这样方便于迁移。</p>
+<p>已下所有操作基于Debain 8 x 64</p>
+<p>docker服务器需要安装包：</p>
+<p>dialog</p>
+<p>perl-base</p>
+<p>apt-utils</p>
+<h2 id="安装docker服务">安装docker服务</h2>
+<p>先删除旧包</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@haproxy-01:~<span class="comment"># apt-get purge lxc-docker*</span></span><br><span class="line">root@haproxy-01:~<span class="comment"># apt-get purge docker.io*</span></span><br></pre></td></tr></table></figure>
+<p>再使apt能工作在https方式及安装CA证书，如下</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@haproxy-01:~<span class="comment"># apt-get update</span></span><br><span class="line">root@haproxy-01:~<span class="comment"># apt-get install apt-transport-https ca-certificates</span></span><br></pre></td></tr></table></figure>
+<p>增加新的GPG key</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@haproxy-01:~<span class="comment"># apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D</span></span><br></pre></td></tr></table></figure>
+<p>根据系统的发行版本增加相应的docker源，我这里使用的是Debian Jessie</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@haproxy-01:~<span class="comment">#  vim /etc/apt/sources.list.d/docker.list  #增加下边的地址</span></span><br><span class="line">deb https://apt.dockerproject.org/repo debian-jessie main</span><br><span class="line">root@haproxy-01:~<span class="comment"># apt-get update</span></span><br></pre></td></tr></table></figure>
+<p>可用以下命令验证<code>docker-engine</code>软件将会从哪个存储库下载及相应软件版本的列表</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@haproxy-01:~<span class="comment"># apt-cache policy docker-engine</span></span><br></pre></td></tr></table></figure>
+<p>安装<code>docker-engine</code>，这里安装目前最新的版本</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">root@haproxy-01:~<span class="comment"># apt-get install docker-engine=1.11.2-0~jessie</span></span><br><span class="line">root@haproxy-01:~<span class="comment"># docker version</span></span><br><span class="line">Client:</span><br><span class="line"> Version:      1.11.2</span><br><span class="line"> API version:  1.23</span><br><span class="line"> Go version:   go1.5.4</span><br><span class="line"> Git commit:   b9f10c9</span><br><span class="line"> Built:        Wed Jun  1 21:23:39 2016</span><br><span class="line"> OS/Arch:      linux/amd64</span><br><span class="line"></span><br><span class="line">Server:</span><br><span class="line"> Version:      1.11.2</span><br><span class="line"> API version:  1.23</span><br><span class="line"> Go version:   go1.5.4</span><br><span class="line"> Git commit:   b9f10c9</span><br><span class="line"> Built:        Wed Jun  1 21:23:39 2016</span><br><span class="line"> OS/Arch:      linux/amd64</span><br></pre></td></tr></table></figure>
+<p>以上操作可以用如下脚本完成：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment">#Program: install_docker.sh</span></span><br><span class="line"><span class="comment">#Author: Neal</span></span><br><span class="line"><span class="comment">#E_mail: sky_551@163.com</span></span><br><span class="line"><span class="comment">#Date: 2016-06-16</span></span><br><span class="line"><span class="comment">#Version 1.0</span></span><br><span class="line"><span class="comment"># for debina jessie x64</span></span><br><span class="line"></span><br><span class="line">version=1.11.2-0~jessie</span><br><span class="line"></span><br><span class="line">PATH=/usr/<span class="built_in">local</span>/sbin:/usr/<span class="built_in">local</span>/bin:/usr/sbin:/usr/bin:/sbin:/bin</span><br><span class="line"><span class="built_in">export</span> PATH</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># del old pkg</span></span><br><span class="line">apt-get purge lxc-docker*</span><br><span class="line">apt-get purge docker.io*</span><br><span class="line"></span><br><span class="line"><span class="comment"># install apt-transport-https ca-certificates</span></span><br><span class="line">apt-get update</span><br><span class="line">apt-get install apt-transport-https ca-certificates</span><br><span class="line"></span><br><span class="line"><span class="comment"># add GPG key</span></span><br><span class="line">apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D</span><br><span class="line"></span><br><span class="line"><span class="comment"># add docker.list for Debian Jessie</span></span><br><span class="line">rm -f /etc/apt/sources.list.d/*</span><br><span class="line">cat &lt;&lt;- EOF &gt;&gt; /etc/apt/sources.list.d/docker.list</span><br><span class="line">deb https://apt.dockerproject.org/repo debian-jessie main</span><br><span class="line">EOF</span><br><span class="line">apt-get update</span><br><span class="line"></span><br><span class="line"><span class="comment"># install docker-engine</span></span><br><span class="line">apt-get install docker-engine=<span class="variable">$&#123;version&#125;</span></span><br><span class="line"></span><br><span class="line">docker version</span><br></pre></td></tr></table></figure>
+<p><strong>在docker中进入一个已运行的容器</strong></p>
+<ul>
+<li>
+<p>首先确保系统已安装有<code>nsenter</code>命令，此命令由<code>util-linux</code>包安装得来，安装命令为<code>apt-get install util-linux</code></p>
+</li>
+<li>
+<p>先得到container id</p>
+</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@haproxy-01:~<span class="comment"># docker ps</span></span><br><span class="line">CONTAINER ID        IMAGE                           COMMAND                CREATED             STATUS              PORTS                                          NAMES</span><br><span class="line">d924adae5ff6        nginx:latest                    <span class="string">&quot;nginx -g &#x27;daemon of   18 hours ago        Up 18 hours         80/tcp, 443/tcp                                r-WEB-Server_Nginx-cluster_1</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>计算出指定container id容器的PID</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@haproxy-01:~<span class="comment"># docker inspect --format &#123;&#123;.State.Pid&#125;&#125; d924adae5ff6</span></span><br><span class="line">20272</span><br></pre></td></tr></table></figure>
+<ul>
+<li>进入到容器中</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@haproxy-01:~<span class="comment"># nsenter --target 20272 --mount --uts --ipc --net --pid</span></span><br><span class="line">root@d924adae5ff6:/<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<p>上边的命令似乎过于复杂，有前辈给我们准备好了便捷的工具，脚本如下：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Some useful commands to use docker.</span></span><br><span class="line"><span class="comment"># Author: yeasy@github</span></span><br><span class="line"><span class="comment"># Created:2014-09-25</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">alias</span> docker-pid=<span class="string">&quot;sudo docker inspect --format &#x27;&#123;&#123;.State.Pid&#125;&#125;&#x27;&quot;</span></span><br><span class="line"><span class="built_in">alias</span> docker-ip=<span class="string">&quot;sudo docker inspect --format &#x27;&#123;&#123; .NetworkSettings.IPAddress &#125;&#125;&#x27;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#the implementation refs from https://github.com/jpetazzo/nsenter/blob/master/docker-enter</span></span><br><span class="line"><span class="keyword">function</span> docker-<span class="function"><span class="title">enter</span></span>() &#123;</span><br><span class="line">    <span class="comment">#if [ -e $(dirname &quot;$0&quot;)/nsenter ]; then</span></span><br><span class="line">    <span class="comment">#Change for centos bash running</span></span><br><span class="line">    <span class="keyword">if</span> [ -e $(dirname <span class="string">&#x27;$0&#x27;</span>)/nsenter ]; <span class="keyword">then</span></span><br><span class="line">        <span class="comment"># with boot2docker, nsenter is not in the PATH but it is in the same folder</span></span><br><span class="line">        NSENTER=$(dirname <span class="string">&quot;<span class="variable">$0</span>&quot;</span>)/nsenter</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="comment"># if nsenter has already been installed with path notified, here will be clarified</span></span><br><span class="line">        NSENTER=$(<span class="built_in">which</span> nsenter)</span><br><span class="line">        <span class="comment">#NSENTER=nsenter</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">    [ -z <span class="string">&quot;<span class="variable">$NSENTER</span>&quot;</span> ] &amp;&amp; <span class="built_in">echo</span> <span class="string">&quot;WARN Cannot find nsenter&quot;</span> &amp;&amp; <span class="built_in">return</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> [ -z <span class="string">&quot;<span class="variable">$1</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;Usage: `basename &quot;</span><span class="variable">$0</span><span class="string">&quot;` CONTAINER [COMMAND [ARG]...]&quot;</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;Enters the Docker CONTAINER and executes the specified COMMAND.&quot;</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;If COMMAND is not specified, runs an interactive shell in CONTAINER.&quot;</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        PID=$(sudo docker inspect --format <span class="string">&quot;&#123;&#123;.State.Pid&#125;&#125;&quot;</span> <span class="string">&quot;<span class="variable">$1</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">if</span> [ -z <span class="string">&quot;<span class="variable">$PID</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">            <span class="built_in">echo</span> <span class="string">&quot;WARN Cannot find the given container&quot;</span></span><br><span class="line">            <span class="built_in">return</span></span><br><span class="line">        <span class="keyword">fi</span></span><br><span class="line">        <span class="built_in">shift</span></span><br><span class="line"></span><br><span class="line">        OPTS=<span class="string">&quot;--target <span class="variable">$PID</span> --mount --uts --ipc --net --pid&quot;</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> [ -z <span class="string">&quot;<span class="variable">$1</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">            <span class="comment"># No command given.</span></span><br><span class="line">            <span class="comment"># Use su to clear all host environment variables except for TERM,</span></span><br><span class="line">            <span class="comment"># initialize the environment variables HOME, SHELL, USER, LOGNAME, PATH,</span></span><br><span class="line">            <span class="comment"># and start a login shell.</span></span><br><span class="line">            <span class="comment">#sudo $NSENTER &quot;$OPTS&quot; su - root</span></span><br><span class="line">            sudo <span class="variable">$NSENTER</span> --target <span class="variable">$PID</span> --mount --uts --ipc --net --pid su - root</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            <span class="comment"># Use env to clear all host environment variables.</span></span><br><span class="line">            sudo <span class="variable">$NSENTER</span> --target <span class="variable">$PID</span> --mount --uts --ipc --net --pid env -i <span class="variable">$@</span></span><br><span class="line">        <span class="keyword">fi</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>把上边的脚本内容保存在用户家目录下，文件名为<code>.bashrc_docker</code>，或直接运行<code>wget -P ~ https://github.com/yeasy/docker_practice/raw/master/_local/.bashrc_docker</code>命令把此脚本文件下载到用户家目录下，再运行如下命令：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;[ -f ~/.bashrc_docker ] &amp;&amp; source ~/.bashrc_docker&quot;</span> &gt;&gt; ~/.bashrc; <span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+<p>这样用户每次登陆时都会执行<code>.bashrc_docker</code>文件，此工具使用：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@cst004:~<span class="comment"># docker-pid &lt;container&gt;   # docker-pid 跟上容器的name即可获得容器的pid</span></span><br><span class="line">root@cst004:~<span class="comment"># docker-enter &lt;container&gt;    # 直接进入容器</span></span><br><span class="line">root@cst004:~<span class="comment"># docker-enter &lt;container&gt; COMMAND   # 直接进入容器执行一个命令</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2016/06/24/docker/2016-06-24-docker%E5%9F%BA%E7%A1%80/">docker基础</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页"></a></p>
+        <p><span>发布时间:</span>2016-06-24, 13:40:00</p>
+        <p><span>最后更新:</span>2020-08-08, 23:29:11</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2016/06/24/docker/2016-06-24-docker%E5%9F%BA%E7%A1%80/" title="docker基础">http://yoursite.com/2016/06/24/docker/2016-06-24-docker%E5%9F%BA%E7%A1%80/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2016/06/24/docker/2016-06-24-docker%E5%9F%BA%E7%A1%80/　　作者: " title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2016/08/14/2016-08-14-%E7%BA%BF%E7%A8%8B%E7%9A%84event%E7%89%B9%E6%80%A7/">
+                    python多线程间通信机制-event
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2016/05/16/2016-05-16-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%8F%8C%E7%AB%AF%E9%98%9F%E5%88%97-%E7%8E%AF%E7%8A%B6%E9%98%9F%E5%88%97/">
+                    python数据结构-双端队列-环状队列
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">Docker基础篇</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#docker%E7%AE%80%E4%BB%8B"><span class="toc-number">1.1.</span> <span class="toc-text">docker简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85docker%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.2.</span> <span class="toc-text">安装docker服务</span></a></li></ol></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"docker基础　| Neal记录　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2016/08/14/2016-08-14-%E7%BA%BF%E7%A8%8B%E7%9A%84event%E7%89%B9%E6%80%A7/" title="上一篇: python多线程间通信机制-event">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2016/05/16/2016-05-16-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%8F%8C%E7%AB%AF%E9%98%9F%E5%88%97-%E7%8E%AF%E7%8A%B6%E9%98%9F%E5%88%97/" title="下一篇: python数据结构-双端队列-环状队列">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2020/08/08/test-md/">test.md</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/15/2016-09-15-os%E6%A8%A1%E5%9D%97%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95%E6%95%B4%E7%90%86/">os模块常用方法整理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/14/2016-09-14-%E5%AD%97%E7%AC%A6%E7%9A%84%E7%BC%96%E7%A0%81%E4%B8%8E%E8%A7%A3%E7%A0%81/">python中的编码与解码</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/13/2016-09-13-tornado%E9%85%8D%E7%BD%AE%E8%A7%A3%E6%9E%90/">tornado配置解析</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/10/2016-09-10-tornado%E5%AF%B9http%E8%AF%B7%E6%B1%82%E7%9A%84%E8%BF%94%E5%9B%9E/">tornado怎样返回信息</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/08/2016-09-07-tornado-http%E5%A4%84%E7%90%86%E8%AF%B7%E6%B1%82%E6%8A%A5%E6%96%87/">tornado处理请求报文</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/21/2016-08-21-%E7%BA%BF%E7%A8%8B%E7%9A%84condition%E7%89%B9%E6%80%A7/">python线程中的condition特性</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/2016-08-14-%E7%BA%BF%E7%A8%8B%E7%9A%84daemon%E4%B8%8Ejoin%E7%89%B9%E6%80%A7/">线程的daemon与join特性</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/2016-08-14-%E7%BA%BF%E7%A8%8B%E7%9A%84event%E7%89%B9%E6%80%A7/">python多线程间通信机制-event</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/24/docker/2016-06-24-docker%E5%9F%BA%E7%A1%80/">docker基础</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/16/2016-05-16-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%8F%8C%E7%AB%AF%E9%98%9F%E5%88%97-%E7%8E%AF%E7%8A%B6%E9%98%9F%E5%88%97/">python数据结构-双端队列-环状队列</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/16/2016-05-16-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-hash/">python数据结构-hash</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/15/2016-05-15-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%8D%95%E7%AB%AF%E9%98%9F%E5%88%97/">python数据结构之队列</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/14/2016-05-14-%E6%A0%88%E8%BF%90%E7%94%A8-%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%A7%A3%E6%9E%90/">栈的运用-表达式解析</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/14/2016-05-14-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%88/">python数据结构之栈</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/12/2016-05-12-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E9%93%BE%E8%A1%A8/">python数据结构-链表</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/12/2016-05-12-%E6%A8%A1%E5%9D%97%E5%8C%96/">python的模块化</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/12/2016-05-12-%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/">python异常处理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/10/2016-05-10-property%E7%9A%84%E5%AE%9E%E7%8E%B0/">python的property实现原理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/09/2016-05-09-%E6%8F%8F%E8%BF%B0%E5%99%A8/">python描述器</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/09/2016-05-09-with%E8%AF%AD%E6%B3%95/">python的with语法</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/08/2016-05-08-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1-%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95-%E7%B1%BB%E8%A3%85%E9%A5%B0%E5%99%A8-%E5%8D%95%E4%BE%8B/">python的魔术方法、类装饰器、单例</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/08/2016-05-08-%E5%8F%8D%E5%B0%84/">python反射</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/07/2016-05-07-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1-%E5%A4%9A%E7%BB%A7%E6%89%BF-MRO-MIXIN/">python面向对象的多继承-MIXIN</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/07/2016-05-07-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1-%E7%BB%A7%E6%89%BF/">python面向对象的继承</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/06/2016-05-06-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1-%E5%B0%81%E8%A3%85-property/">python面向对象-封装</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/06/2016-05-06-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1-%E5%9F%BA%E7%A1%80-%E5%B0%81%E8%A3%85/">python面向对象基础理论</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/05/2016-05-05-%E5%B8%A6%E5%8F%82%E6%95%B0%E7%9A%84%E8%A3%85%E9%A5%B0%E5%99%A8/">python带参数的装饰器</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/04/2016-05-04-%E8%A3%85%E9%A5%B0%E5%99%A8/">python装饰器</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/03/2016-05-03-%E5%88%97%E8%A1%A8%E8%A7%A3%E6%9E%90/">python列表解析</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/01/2016-05-01-%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%93%8D%E4%BD%9C/">python的字符串操作</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/30/2016-04-30-built-CA-and-certificate/">自建CA及证颁发证书shell脚本</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/07/2016-04-07-python-learn-decorator/">python装饰器</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/06/2016-04-06-deploy-gitlab-use-shell/">使用shell部署gitlab</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/28/2016-03-28-deploy-redis-cluster-use-ansible/">ansible playbook定义redis-cluster</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/24/2016-03-24-system-initialization-use-ansible/">ansible编写系统初始化playbook</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/18/2016-03-18-text-process/">批量替换文件中指定字符串</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/17/2016-03-17-python-learn-function/">python函数</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/16/2016-03-16-python-learn-list-and-tuple/">python的列表与元组</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/16/2016-03-16-python-learn-conditional-and-circulation/">python条件判断及循环语句</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/09/2016-03-09-make-nginx-template/">nginx编译安装并引入优秀的第三方模块</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/03/2016-03-02-logs-del-shell-v3/">日志数据删除脚本v3</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/03/2016-03-03-deploy-gitlib/">shell脚本部署gitlab环境</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/02/2016-03-02-logs-del-shell-v2/">日志数据删除脚本v1</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/02/2016-03-02-logs-del-shell-v1/">日志数据删除脚本v1</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2020 Neal
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

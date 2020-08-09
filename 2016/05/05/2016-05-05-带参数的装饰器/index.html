@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="Neal" />
+
+
+
+<meta name="description" content="装饰器更高级的用法是可以带参数。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python带参数的装饰器">
+<meta property="og:url" content="http://yoursite.com/2016/05/05/2016-05-05-%E5%B8%A6%E5%8F%82%E6%95%B0%E7%9A%84%E8%A3%85%E9%A5%B0%E5%99%A8/index.html">
+<meta property="og:site_name" content="Neal记录">
+<meta property="og:description" content="装饰器更高级的用法是可以带参数。">
+<meta property="og:locale">
+<meta property="article:published_time" content="2016-05-05T13:00:00.000Z">
+<meta property="article:modified_time" content="2020-08-08T15:29:11.627Z">
+<meta property="article:author" content="Neal">
+<meta property="article:tag" content="装饰器">
+<meta name="twitter:card" content="summary">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="Neal记录" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/img/snail.png">
+
+
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>python带参数的装饰器 | Neal记录</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: false,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.0.0"></head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/snail.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/"></a></h1>
+        </hgroup>
+
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/MIXIN/" rel="tag">MIXIN</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/base64/" rel="tag">base64</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/decode/" rel="tag">decode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/define/" rel="tag">define</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker%E5%9F%BA%E7%A1%80/" rel="tag">docker基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/encode/" rel="tag">encode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gitlab/" rel="tag">gitlab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gitlab%E9%83%A8%E7%BD%B2/" rel="tag">gitlab部署</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hash/" rel="tag">hash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/logs-del/" rel="tag">logs del</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/options/" rel="tag">options</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/property%E5%AE%9E%E7%8E%B0/" rel="tag">property实现</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python%E6%A0%87%E5%87%86%E5%BA%93%EF%BC%8Cos%E6%A8%A1%E5%9D%97/" rel="tag">python标准库，os模块</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell%EF%BC%8Cpython/" rel="tag">shell，python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tornado/" rel="tag">tornado</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/with%E8%AF%AD%E6%B3%95/" rel="tag">with语法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%87%BD%E6%95%B0/" rel="tag">函数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%97%E8%A1%A8%E8%A7%A3%E6%9E%90/" rel="tag">列表解析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%97%E8%A1%A8%EF%BC%8C%E5%85%83%E7%BB%84/" rel="tag">列表，元组</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8F%8C%E7%AB%AF%E9%98%9F%E5%88%97%EF%BC%8C%E7%8E%AF%E7%8A%B6%E9%98%9F%E5%88%97/" rel="tag">双端队列，环状队列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8F%8D%E5%B0%84/" rel="tag">反射</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%84%E7%90%86%E8%AF%B7%E6%B1%82/" rel="tag">处理请求</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B%EF%BC%8Cevent%E7%89%B9%E6%80%A7/" rel="tag">多线程，event特性</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BB%A7%E6%89%BF%EF%BC%8CMRO/" rel="tag">多继承，MRO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/" rel="tag">字符串</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%82%E5%B8%B8/" rel="tag">异常</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8F%8F%E8%BF%B0%E5%99%A8/" rel="tag">描述器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD%EF%BC%8C%E5%BE%AA%E7%8E%AF/" rel="tag">条件判断，循环</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%88/" rel="tag">栈</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%88%E8%BF%90%E7%94%A8%EF%BC%8C%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%A7%A3%E6%9E%90/" rel="tag">栈运用，表达式解析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A8%A1%E5%9D%97%E5%8C%96/" rel="tag">模块化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%B3%BB%E7%BB%9F%E5%88%9D%E5%A7%8B%E5%8C%96/" rel="tag">系统初始化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E7%A8%8B%EF%BC%8Ccondition/" rel="tag">线程，condition</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%A7%E6%89%BF/" rel="tag">继承</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E5%BB%BACA/" rel="tag">自建CA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A3%85%E9%A5%B0%E5%99%A8/" rel="tag">装饰器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A3%85%E9%A5%B0%E5%99%A8%EF%BC%8Cdecorator/" rel="tag">装饰器，decorator</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BF%94%E5%9B%9E%E8%AF%B7%E6%B1%82/" rel="tag">返回请求</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%85%8D%E7%BD%AE%E8%A7%A3%E6%9E%90/" rel="tag">配置解析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%93%BE%E8%A1%A8/" rel="tag">链表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%98%9F%E5%88%97/" rel="tag">队列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" rel="tag">面向对象</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%EF%BC%8C%E5%B0%81%E8%A3%85/" rel="tag">面向对象，封装</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95%EF%BC%8C%E7%B1%BB%E8%A3%85%E9%A5%B0%E5%99%A8%EF%BC%8C%E5%8D%95%E4%BE%8B/" rel="tag">魔术方法，类装饰器，单例</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">专注于linux</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页"></a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/snail.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页"></a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-2016-05-05-带参数的装饰器" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/05/05/2016-05-05-%E5%B8%A6%E5%8F%82%E6%95%B0%E7%9A%84%E8%A3%85%E9%A5%B0%E5%99%A8/" class="article-date">
+      <time datetime="2016-05-05T13:00:00.000Z" itemprop="datePublished">2016-05-05</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      python带参数的装饰器
+    </h1>
+  
+
+        <!-- 开始添加字数统计-->
+        
+         <!-- 添加完成 -->
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/python%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">python学习笔记</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%A3%85%E9%A5%B0%E5%99%A8/" rel="tag">装饰器</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>装饰器更高级的用法是可以带参数。</p>
+<a id="more"></a>
+<h2 id="带参数的装饰器">带参数的装饰器</h2>
+<p>先来看一个不带参数的装饰器</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">timeit</span>(<span class="params">fn</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrap</span>(<span class="params">*args,**kwargs</span>):</span></span><br><span class="line">        start = time.time()</span><br><span class="line">        ret = fn(*args,**kwargs)</span><br><span class="line">        print(time.time() - start)</span><br><span class="line">        <span class="keyword">return</span> ret</span><br><span class="line">    <span class="keyword">return</span> wrap</span><br><span class="line"> </span><br><span class="line"><span class="meta">@timeit</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sleep</span>(<span class="params">x</span>):</span></span><br><span class="line">    time.sleep(x)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sleep(<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+<pre><code>3.0034420490264893
+</code></pre>
+<p>这里打印出来的是执行<code>sleep</code>函数所消耗的<code>自然时间</code>,但在执行此函数时所消耗的cpu时间真的有3.0034420490264893秒吗？当然不是。利用time包中的<code>time.clock</code>方法可以计算得到代码执行所消耗cpu的时间，那怎样来修改上边的<code>timeit</code>函数，让其即能计算代码执行的自然时间，也能计算代码执行所消耗cpu的时间？做如下改进：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">timeit_1</span>(<span class="params">process_time=False</span>):</span></span><br><span class="line">    cacl = time.clock <span class="keyword">if</span> process_time <span class="keyword">else</span> time.time</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">timeit_2</span>(<span class="params">fn</span>):</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">wrap</span>(<span class="params">*args,**kwargs</span>):</span></span><br><span class="line">            start = cacl()</span><br><span class="line">            ret = fn(*args,**kwargs)</span><br><span class="line">            print(cacl() - start)</span><br><span class="line">            <span class="keyword">return</span> ret</span><br><span class="line">        <span class="keyword">return</span> wrap</span><br><span class="line">    <span class="keyword">return</span> timeit_2</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sleep_1</span>(<span class="params">x</span>):</span></span><br><span class="line">    time.sleep(x)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">timeit_1(<span class="literal">True</span>)(sleep_1)(<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+<pre><code>0.020000000000000018
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">timeit_1(<span class="literal">False</span>)(sleep_1)(<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+<pre><code>3.0038363933563232
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">timeit_1()(sleep_1)(<span class="number">3</span>)   <span class="comment"># 参数process_time是一个默认参数，所以可以不传递值，默认为False</span></span><br></pre></td></tr></table></figure>
+<pre><code>3.003509283065796
+</code></pre>
+<p>上边的调用过程是怎样的呢？分解一下，如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fn1 = timeit_1(<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+<p>上边调用<code>timeit_1(True)</code>，函数return回了<code>timeit_2</code>，并把<code>fn1</code>这个变量指向了调用结果，即指向了<code>timeit_2</code>，这里的<code>timeit_2</code>也是一个函数，此函数接收一个参数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fn2 = fn1(sleep_1)</span><br></pre></td></tr></table></figure>
+<p>这里调用<code>fn1(sleep_1)</code>，其实就是调用了<code>timeit_2(sleep_1)</code>，并把<code>fn2</code>这个变量指向了调用后的结果，即指向了<code>warp</code>，这里的<code>warp</code>也是一个函数，此函数能接收任意的参数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fn2(<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+<pre><code>0.009999999999999787
+</code></pre>
+<p>上边调用<code>fn2(3)</code>，其实是调用了<code>wrap(3)</code>,即执行了<code>wrap</code>函数内的语句，此函数内的<code>ret = fn(*args,**kwargs)</code>语句中的<code>fn</code>其实是指向了<code>sleep</code>，所以在执行<code>wrap</code>函数时，<code>sleep_1</code>函数才真正被执行。</p>
+<p>既然装饰器可以用魔法来装饰一个函数，那上边经过改进过的装饰器是不是也能装饰一个函数呢？如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@timeit_1(False)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sleep_2</span>(<span class="params">x</span>):</span></span><br><span class="line">    time.sleep(x)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sleep_2(<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+<pre><code>3.0039477348327637
+</code></pre>
+<p>如果想计算代码执行的cpu时间，那如下即可：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@timeit_1(True)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sleep_3</span>(<span class="params">x</span>):</span></span><br><span class="line">    time.sleep(x)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sleep_3(<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+<pre><code>0.0
+</code></pre>
+<p>这个魔法又发生了什么呢？</p>
+<p>其实质就是在没有用魔法的情况下直接<code>timeit_1(True)(sleep_3)(3)</code>。而当使用<code>@</code>这个魔法后，当代码执行到此行时，解析器会执行<code>timeit_1(True)</code>,<code>timeit_1</code>实质就是一函数，接收一个参数，并返回一个<code>timeit_2</code>函数。当代码执行到<code>@</code>所在语句时，会把所装饰的<code>sleep_3</code>函数作为一个参数传递给<code>timeit_1(True)</code>的调用结果，即<code>timeit_2</code>这个函数，即<code>sleep_3</code>这个函数已作为一个变量传递给了<code>timeit_2(fn)</code>中的<code>fn</code>参数，并返回了一个<code>wrap</code>函数，在接下的调用<code>sleep_3(3)</code>这个操作，其实此时的<code>sleep_3</code>这个函数已不是原先的<code>def sleep_3(x):</code>中的<code>sleep_3</code>函数，而是一个指向了<code>wrap</code>的函数，<code>wrap</code>函数接收任何参数，所以把当执行<code>sleep_3(3)</code>时，把参数<code>3</code>传递给了<code>wrap</code>函数，并执行内部的代码，内部代码中<code>ret = fn(*args,**kwargs)</code>中的<code>fn</code>函数依赖还是指向原先的<code>sleep_3(x)</code>这个函数。</p>
+<p>这里也有一个简单的记忆方式，如果一个函数被装饰器所装饰，在调用这个函数时其实不再是调用表面上看上去的这个函数，以</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@timeit_1(True)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sleep_3</span>(<span class="params">x</span>):</span></span><br><span class="line">    time.sleep(x)</span><br></pre></td></tr></table></figure>
+<p>来做说明。当执行到有<code>@</code>魔法所在行时，相当于执行了<code>sleep_3 = timeit_1(True)(sleep_3)</code>，即指向了<code>wrap</code>函数，既然<code>sleep_3</code>指向了<code>wrap</code>函数，那我们执行<code>sleep_3(3)</code>时，其实就是在进行<code>wrap(3)</code>这样的函数调用，记住，函数名也是一个变量。</p>
+<p>再来举一个带参数的装饰器的例子，比如有一个函数，只有在对有许可权限的用户开放，执行此函数的用户没有在认证列表里的，就不会执行这个函数。这个该如何实现呢？如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check</span>(<span class="params">allow_users</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner_check</span>(<span class="params">fn</span>):</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">wrap</span>(<span class="params">username,*args,**kwargs</span>):</span></span><br><span class="line">            <span class="string">&#x27;&#x27;&#x27;This is wrap&#x27;&#x27;&#x27;</span></span><br><span class="line">            <span class="keyword">if</span> username <span class="keyword">in</span> allow_users:</span><br><span class="line">                <span class="keyword">return</span> fn(username,*args,**kwargs)</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;You are illegal users&quot;</span></span><br><span class="line">        <span class="keyword">return</span> wrap</span><br><span class="line">    <span class="keyword">return</span> inner_check</span><br><span class="line"> </span><br><span class="line"><span class="meta">@check([&#x27;zhaochj&#x27;,&#x27;zcj&#x27;])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">private</span>(<span class="params">username</span>):</span></span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;The authentication&#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;You are legitimate users&quot;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private(<span class="string">&#x27;zhaochj&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<pre><code>'You are legitimate users'
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private(<span class="string">&#x27;tom&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<pre><code>'You are illegal users'
+</code></pre>
+<p>这样就可以对调用函数进行身份验证。</p>
+<p>python中一个函数有一些属性是函数本身具有的，比如<code>__name__</code>属性是查看函数名称，<code>__doc__</code>是查看函数文档的等等。如果一个函数被装饰器装饰过后，这个函数的这些属性会发生怎样的变化呢？以上边的<code>check</code>装饰器和<code>private</code>函数为例子，如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private.__name__</span><br></pre></td></tr></table></figure>
+<pre><code>'wrap'
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private.__doc__</span><br></pre></td></tr></table></figure>
+<pre><code>'This is wrap'
+</code></pre>
+<p><code>private</code>函数的名称是<code>wrap</code>了，文档也是<code>wrap</code>函数的文档，这是怎么回事？上边已经说过，这里的<code>private</code>函数被装饰器装饰后它已不再是原来的<code>private</code>函数，<code>private</code>这个函数名称会被指向到<code>wrap</code>这个函数对象，那当然用上边的<code>private.__name__</code>和<code>private.__doc__</code>查看函数的属性就会是<code>wrap</code>函数的属性。那怎样来修正呢？可以这样做，如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check_1</span>(<span class="params">allow_users</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner_check</span>(<span class="params">fn</span>):</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">wrap</span>(<span class="params">username,*args,**kwargs</span>):</span></span><br><span class="line">            <span class="string">&#x27;&#x27;&#x27;This is wrap&#x27;&#x27;&#x27;</span></span><br><span class="line">            <span class="keyword">if</span> username <span class="keyword">in</span> allow_users:</span><br><span class="line">                <span class="keyword">return</span> fn(username,*args,**kwargs)</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;You are illegal users&quot;</span></span><br><span class="line">        wrap.__name__ = fn.__name__</span><br><span class="line">        wrap.__doc__ = fn.__doc__</span><br><span class="line">        <span class="keyword">return</span> wrap</span><br><span class="line">    <span class="keyword">return</span> inner_check</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"><span class="meta">@check_1([&#x27;zhaochj&#x27;,&#x27;zcj&#x27;])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">private_1</span>(<span class="params">username</span>):</span></span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;The authentication&#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;You are legitimate users&quot;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private_1.__name__</span><br></pre></td></tr></table></figure>
+<pre><code>'private_1'
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private_1.__doc__</span><br></pre></td></tr></table></figure>
+<pre><code>'The authentication'
+</code></pre>
+<p>通过在装饰器把<code>__name__</code>和<code>__doc__</code>重新赋值后就能更正这个问题，但对一个函数来说像<code>__name__</code>这样类似的属性有许多，如果都是这样手工来修正显然是不现实的，所以python提供了一个<code>wraps</code>装饰器来自动修正这个问题，<code>wraps</code>在<code>functools</code>这个包中，所以可以这样来修正这个问题，如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> functools</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check_1</span>(<span class="params">allow_users</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner_check</span>(<span class="params">fn</span>):</span></span><br><span class="line"><span class="meta">        @functools.wraps(fn)</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">wrap</span>(<span class="params">username,*args,**kwargs</span>):</span></span><br><span class="line">            <span class="string">&#x27;&#x27;&#x27;This is wrap&#x27;&#x27;&#x27;</span></span><br><span class="line">            <span class="keyword">if</span> username <span class="keyword">in</span> allow_users:</span><br><span class="line">                <span class="keyword">return</span> fn(username,*args,**kwargs)</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;You are illegal users&quot;</span></span><br><span class="line">        <span class="keyword">return</span> wrap</span><br><span class="line">    <span class="keyword">return</span> inner_check</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"><span class="meta">@check_1([&#x27;zhaochj&#x27;,&#x27;zcj&#x27;])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">private_1</span>(<span class="params">username</span>):</span></span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;The authentication&#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;You are legitimate users&quot;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private_1.__name__</span><br></pre></td></tr></table></figure>
+<pre><code>'private_1'
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private_1.__doc__</span><br></pre></td></tr></table></figure>
+<pre><code>'The authentication'
+</code></pre>
+<p><code>@functools.wraps(fn)</code>这个装饰器相当于执行了<code>wrap.__name__ = fn.__name__</code>这样的操作。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2016/05/05/2016-05-05-%E5%B8%A6%E5%8F%82%E6%95%B0%E7%9A%84%E8%A3%85%E9%A5%B0%E5%99%A8/">python带参数的装饰器</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页"></a></p>
+        <p><span>发布时间:</span>2016-05-05, 21:00:00</p>
+        <p><span>最后更新:</span>2020-08-08, 23:29:11</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2016/05/05/2016-05-05-%E5%B8%A6%E5%8F%82%E6%95%B0%E7%9A%84%E8%A3%85%E9%A5%B0%E5%99%A8/" title="python带参数的装饰器">http://yoursite.com/2016/05/05/2016-05-05-%E5%B8%A6%E5%8F%82%E6%95%B0%E7%9A%84%E8%A3%85%E9%A5%B0%E5%99%A8/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2016/05/05/2016-05-05-%E5%B8%A6%E5%8F%82%E6%95%B0%E7%9A%84%E8%A3%85%E9%A5%B0%E5%99%A8/　　作者: " title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2016/05/06/2016-05-06-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1-%E5%9F%BA%E7%A1%80-%E5%B0%81%E8%A3%85/">
+                    python面向对象基础理论
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2016/05/04/2016-05-04-%E8%A3%85%E9%A5%B0%E5%99%A8/">
+                    python装饰器
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%A6%E5%8F%82%E6%95%B0%E7%9A%84%E8%A3%85%E9%A5%B0%E5%99%A8"><span class="toc-number">1.</span> <span class="toc-text">带参数的装饰器</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"python带参数的装饰器　| Neal记录　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2016/05/06/2016-05-06-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1-%E5%9F%BA%E7%A1%80-%E5%B0%81%E8%A3%85/" title="上一篇: python面向对象基础理论">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2016/05/04/2016-05-04-%E8%A3%85%E9%A5%B0%E5%99%A8/" title="下一篇: python装饰器">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2020/08/08/test-md/">test.md</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/15/2016-09-15-os%E6%A8%A1%E5%9D%97%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95%E6%95%B4%E7%90%86/">os模块常用方法整理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/14/2016-09-14-%E5%AD%97%E7%AC%A6%E7%9A%84%E7%BC%96%E7%A0%81%E4%B8%8E%E8%A7%A3%E7%A0%81/">python中的编码与解码</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/13/2016-09-13-tornado%E9%85%8D%E7%BD%AE%E8%A7%A3%E6%9E%90/">tornado配置解析</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/10/2016-09-10-tornado%E5%AF%B9http%E8%AF%B7%E6%B1%82%E7%9A%84%E8%BF%94%E5%9B%9E/">tornado怎样返回信息</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/08/2016-09-07-tornado-http%E5%A4%84%E7%90%86%E8%AF%B7%E6%B1%82%E6%8A%A5%E6%96%87/">tornado处理请求报文</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/21/2016-08-21-%E7%BA%BF%E7%A8%8B%E7%9A%84condition%E7%89%B9%E6%80%A7/">python线程中的condition特性</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/2016-08-14-%E7%BA%BF%E7%A8%8B%E7%9A%84daemon%E4%B8%8Ejoin%E7%89%B9%E6%80%A7/">线程的daemon与join特性</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/2016-08-14-%E7%BA%BF%E7%A8%8B%E7%9A%84event%E7%89%B9%E6%80%A7/">python多线程间通信机制-event</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/24/docker/2016-06-24-docker%E5%9F%BA%E7%A1%80/">docker基础</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/16/2016-05-16-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%8F%8C%E7%AB%AF%E9%98%9F%E5%88%97-%E7%8E%AF%E7%8A%B6%E9%98%9F%E5%88%97/">python数据结构-双端队列-环状队列</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/16/2016-05-16-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-hash/">python数据结构-hash</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/15/2016-05-15-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%8D%95%E7%AB%AF%E9%98%9F%E5%88%97/">python数据结构之队列</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/14/2016-05-14-%E6%A0%88%E8%BF%90%E7%94%A8-%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%A7%A3%E6%9E%90/">栈的运用-表达式解析</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/14/2016-05-14-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%88/">python数据结构之栈</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/12/2016-05-12-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E9%93%BE%E8%A1%A8/">python数据结构-链表</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/12/2016-05-12-%E6%A8%A1%E5%9D%97%E5%8C%96/">python的模块化</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/12/2016-05-12-%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/">python异常处理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/10/2016-05-10-property%E7%9A%84%E5%AE%9E%E7%8E%B0/">python的property实现原理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/09/2016-05-09-%E6%8F%8F%E8%BF%B0%E5%99%A8/">python描述器</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/09/2016-05-09-with%E8%AF%AD%E6%B3%95/">python的with语法</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/08/2016-05-08-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1-%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95-%E7%B1%BB%E8%A3%85%E9%A5%B0%E5%99%A8-%E5%8D%95%E4%BE%8B/">python的魔术方法、类装饰器、单例</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/08/2016-05-08-%E5%8F%8D%E5%B0%84/">python反射</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/07/2016-05-07-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1-%E5%A4%9A%E7%BB%A7%E6%89%BF-MRO-MIXIN/">python面向对象的多继承-MIXIN</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/07/2016-05-07-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1-%E7%BB%A7%E6%89%BF/">python面向对象的继承</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/06/2016-05-06-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1-%E5%B0%81%E8%A3%85-property/">python面向对象-封装</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/06/2016-05-06-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1-%E5%9F%BA%E7%A1%80-%E5%B0%81%E8%A3%85/">python面向对象基础理论</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/05/2016-05-05-%E5%B8%A6%E5%8F%82%E6%95%B0%E7%9A%84%E8%A3%85%E9%A5%B0%E5%99%A8/">python带参数的装饰器</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/04/2016-05-04-%E8%A3%85%E9%A5%B0%E5%99%A8/">python装饰器</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/03/2016-05-03-%E5%88%97%E8%A1%A8%E8%A7%A3%E6%9E%90/">python列表解析</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/01/2016-05-01-%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%93%8D%E4%BD%9C/">python的字符串操作</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/30/2016-04-30-built-CA-and-certificate/">自建CA及证颁发证书shell脚本</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/07/2016-04-07-python-learn-decorator/">python装饰器</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/06/2016-04-06-deploy-gitlab-use-shell/">使用shell部署gitlab</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/28/2016-03-28-deploy-redis-cluster-use-ansible/">ansible playbook定义redis-cluster</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/24/2016-03-24-system-initialization-use-ansible/">ansible编写系统初始化playbook</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/18/2016-03-18-text-process/">批量替换文件中指定字符串</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/17/2016-03-17-python-learn-function/">python函数</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/16/2016-03-16-python-learn-list-and-tuple/">python的列表与元组</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/16/2016-03-16-python-learn-conditional-and-circulation/">python条件判断及循环语句</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/09/2016-03-09-make-nginx-template/">nginx编译安装并引入优秀的第三方模块</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/03/2016-03-02-logs-del-shell-v3/">日志数据删除脚本v3</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/03/2016-03-03-deploy-gitlib/">shell脚本部署gitlab环境</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/02/2016-03-02-logs-del-shell-v2/">日志数据删除脚本v1</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/02/2016-03-02-logs-del-shell-v1/">日志数据删除脚本v1</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2020 Neal
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

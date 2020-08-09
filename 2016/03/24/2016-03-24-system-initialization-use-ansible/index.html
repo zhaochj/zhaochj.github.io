@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="Neal" />
+
+
+
+<meta name="description" content="刚到公司时，从基础组同事那里拿到的虚拟主机的系统环境并不符合应用的要求，这时就需要应用运维的同事安装一些软件和配置一些环境变量，而这些事情往往是反复操作，极大的浪费时间。这里介绍使用ansible这个神器来解决系统初始化的操作。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ansible编写系统初始化playbook">
+<meta property="og:url" content="http://yoursite.com/2016/03/24/2016-03-24-system-initialization-use-ansible/index.html">
+<meta property="og:site_name" content="Neal记录">
+<meta property="og:description" content="刚到公司时，从基础组同事那里拿到的虚拟主机的系统环境并不符合应用的要求，这时就需要应用运维的同事安装一些软件和配置一些环境变量，而这些事情往往是反复操作，极大的浪费时间。这里介绍使用ansible这个神器来解决系统初始化的操作。">
+<meta property="og:locale">
+<meta property="article:published_time" content="2016-03-24T13:30:00.000Z">
+<meta property="article:modified_time" content="2020-08-08T15:29:11.656Z">
+<meta property="article:author" content="Neal">
+<meta property="article:tag" content="系统初始化">
+<meta name="twitter:card" content="summary">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="Neal记录" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/img/snail.png">
+
+
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>ansible编写系统初始化playbook | Neal记录</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: false,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.0.0"></head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/snail.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/"></a></h1>
+        </hgroup>
+
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/MIXIN/" rel="tag">MIXIN</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/base64/" rel="tag">base64</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/decode/" rel="tag">decode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/define/" rel="tag">define</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker%E5%9F%BA%E7%A1%80/" rel="tag">docker基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/encode/" rel="tag">encode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gitlab/" rel="tag">gitlab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gitlab%E9%83%A8%E7%BD%B2/" rel="tag">gitlab部署</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hash/" rel="tag">hash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/logs-del/" rel="tag">logs del</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/options/" rel="tag">options</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/property%E5%AE%9E%E7%8E%B0/" rel="tag">property实现</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python%E6%A0%87%E5%87%86%E5%BA%93%EF%BC%8Cos%E6%A8%A1%E5%9D%97/" rel="tag">python标准库，os模块</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell%EF%BC%8Cpython/" rel="tag">shell，python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tornado/" rel="tag">tornado</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/with%E8%AF%AD%E6%B3%95/" rel="tag">with语法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%87%BD%E6%95%B0/" rel="tag">函数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%97%E8%A1%A8%E8%A7%A3%E6%9E%90/" rel="tag">列表解析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%97%E8%A1%A8%EF%BC%8C%E5%85%83%E7%BB%84/" rel="tag">列表，元组</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8F%8C%E7%AB%AF%E9%98%9F%E5%88%97%EF%BC%8C%E7%8E%AF%E7%8A%B6%E9%98%9F%E5%88%97/" rel="tag">双端队列，环状队列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8F%8D%E5%B0%84/" rel="tag">反射</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%84%E7%90%86%E8%AF%B7%E6%B1%82/" rel="tag">处理请求</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B%EF%BC%8Cevent%E7%89%B9%E6%80%A7/" rel="tag">多线程，event特性</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BB%A7%E6%89%BF%EF%BC%8CMRO/" rel="tag">多继承，MRO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/" rel="tag">字符串</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%82%E5%B8%B8/" rel="tag">异常</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8F%8F%E8%BF%B0%E5%99%A8/" rel="tag">描述器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD%EF%BC%8C%E5%BE%AA%E7%8E%AF/" rel="tag">条件判断，循环</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%88/" rel="tag">栈</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%88%E8%BF%90%E7%94%A8%EF%BC%8C%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%A7%A3%E6%9E%90/" rel="tag">栈运用，表达式解析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A8%A1%E5%9D%97%E5%8C%96/" rel="tag">模块化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%B3%BB%E7%BB%9F%E5%88%9D%E5%A7%8B%E5%8C%96/" rel="tag">系统初始化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E7%A8%8B%EF%BC%8Ccondition/" rel="tag">线程，condition</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%A7%E6%89%BF/" rel="tag">继承</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E5%BB%BACA/" rel="tag">自建CA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A3%85%E9%A5%B0%E5%99%A8/" rel="tag">装饰器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A3%85%E9%A5%B0%E5%99%A8%EF%BC%8Cdecorator/" rel="tag">装饰器，decorator</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BF%94%E5%9B%9E%E8%AF%B7%E6%B1%82/" rel="tag">返回请求</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%85%8D%E7%BD%AE%E8%A7%A3%E6%9E%90/" rel="tag">配置解析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%93%BE%E8%A1%A8/" rel="tag">链表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%98%9F%E5%88%97/" rel="tag">队列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" rel="tag">面向对象</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%EF%BC%8C%E5%B0%81%E8%A3%85/" rel="tag">面向对象，封装</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95%EF%BC%8C%E7%B1%BB%E8%A3%85%E9%A5%B0%E5%99%A8%EF%BC%8C%E5%8D%95%E4%BE%8B/" rel="tag">魔术方法，类装饰器，单例</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">专注于linux</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页"></a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/snail.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页"></a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-2016-03-24-system-initialization-use-ansible" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/03/24/2016-03-24-system-initialization-use-ansible/" class="article-date">
+      <time datetime="2016-03-24T13:30:00.000Z" itemprop="datePublished">2016-03-24</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      ansible编写系统初始化playbook
+    </h1>
+  
+
+        <!-- 开始添加字数统计-->
+        
+         <!-- 添加完成 -->
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/ansible-playbook/">ansible playbook</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%B3%BB%E7%BB%9F%E5%88%9D%E5%A7%8B%E5%8C%96/" rel="tag">系统初始化</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>刚到公司时，从基础组同事那里拿到的虚拟主机的系统环境并不符合应用的要求，这时就需要应用运维的同事安装一些软件和配置一些环境变量，而这些事情往往是反复操作，极大的浪费时间。这里介绍使用ansible这个神器来解决系统初始化的操作。</p>
+<a id="more"></a>
+<h1>目的</h1>
+<p>系统初始化工作是一个简单、繁复的工作，从基础组得到的虚拟主机只是一个最最基础的系统环境，有许多安装包和环境所需要的配置都没有进行相应的设置，应用运维组的同事<br>
+需要针对虚拟主机担任角色不同而需要进行一此初始化工作，为了让应用组人员从完全人肉方式初始化系统中解脱出来，所以用ansible工具编写playbook来完成系统初始化工作。提<br>
+高系统初始化效率，减少主机上线时间，减少因人肉初始化系统带的操作失误。</p>
+<h1>主机角色及任务梳理</h1>
+<p>实际环境中因主机担任的角色不同而所需要初始化的操作也有所不同，需要整理出几个大类的主机角色，以及各种主机角色所在做的操作，关联到ansible上就所要做的就是task。</p>
+<h2 id="主机角色分类">主机角色分类</h2>
+<pre><code>1. 纯JDK运行环境
+2. Tomcat运行环境
+3. redis-cluster集群环境
+4. Nginx环境
+5. HAproxy环境
+6. lvs环境
+......
+</code></pre>
+<h2 id="主机所需执行task">主机所需执行task</h2>
+<p>根据主机所担任的角色不同所需要执行的task也有所不同，而有一些task是需要在所有主机执行。</p>
+<ul>
+<li><strong>基础task</strong></li>
+</ul>
+<p>基础stsk是所有主机都需要执行的task，task整理如下：</p>
+<pre><code>1. 禁用ssh登陆DNS解析
+2. 启用开机执行时间同步
+3. 配置apt源
+4. 安装基础软件包
+5. 时间同步设置成crontab
+6. 执行计划任务时启用日志功能
+7. 设置主机网关（若无就设置网关）
+8. 设置常用命令别名
+9. 设置主机DNS
+10. 修改主机openfile
+11. 增加业务用户，设置密码，建立无密码验证
+12. 修改root用户密码
+......
+</code></pre>
+<ul>
+<li><strong>JDK运行环境所执行task</strong></li>
+</ul>
+<p>JDK环境只需要安装JDK包和配置必要的JAVA环境变量即可，针对JAVA的环境变量不会去编辑 <code>/etc/profile</code> 这个系统级的环境文件，只修改用户家目录下的 <code>.bashrc</code> 和 <code>.bash_profile</code> 文件。所执行task整理如下：</p>
+<pre><code>1. 拷贝JAVA二进制程序到远程主机的用户家目录
+2. 拷贝.bashrc和.bash_profile文件到用户家目录
+</code></pre>
+<ul>
+<li><strong>Tomcat运行环境执行task</strong></li>
+</ul>
+<p>Tomcat环境除了需要JDK外，还需要上传一个Tomcat包到远程主机，再配置Tomcat相应的环境变量，在配置环境变量时同样不会去改变系统级的环境变量，只是修改<code>.bashrc</code>和<code>.bash_profile</code>用户级的环境变量文件。需要执行的task整理如下：</p>
+ <pre><code>1. 拷贝JAVA二进制包到远程主机的用户家目录
+2. 拷贝Tomcat二进制包到远程主机的用户家目录
+3. 拷贝.bashrc和.bash_profile文件到用户家目录
+4. 根据远程主机的内存大小来配置catalina.sh文件中的JVM的内存大小
+......
+</code></pre>
+<ul>
+<li><strong>redis-cluster集群环境需执行task</strong></li>
+</ul>
+<p>redis cluster集群基于3.0.5编译而成，redis cluster手动编译配置过程请参考<a target="_blank" rel="noopener" href="http://zhaochj.blog.51cto.com/368705/1700892">这里</a>。task整理如下：</p>
+<pre><code>1. 拷贝redis二进制包到远程主机
+2. 生成redis.conf文件
+3. 启动redis实例
+... ...
+</code></pre>
+<ul>
+<li><strong>Nginx环境需执行task</strong></li>
+</ul>
+<p>Nginx环境的部署采用自编译后的二进制包，编译过程请参考<a target="_blank" rel="noopener" href="http://zhaochj.github.io/make-nginx-template/">这里</a>，需要执行的task大致如下：</p>
+<pre><code>1. 安装依赖包
+2. 把已编译好的二进制包拷贝到目标主机并解压到相应目录
+3. 增加运行nginx的用户
+4. 增加systemctl方式管理的nginx.service脚本
+5. 提供样例配置文件
+6. 配置nginx日志滚动
+7. 提供常用的网络优化参数
+8. 导出nginx的二进制文件
+9. 开启nginx配置文件的语法高亮
+......
+</code></pre>
+<ul>
+<li><strong>HAproxy环境所需执行task</strong></li>
+</ul>
+<p>HAproxy的环境部署直接采用apt-get的安装，版本是1.5.8，需要执行的task整理如下：</p>
+<pre><code>1. 安装haproxy软件包
+2. 提供样例配置文件
+3. 开启haproxy配置文件的语法高亮
+4. 开启haproxy的日志功能
+......
+</code></pre>
+<p>上边把生产环境中常见的环境罗列出来，下边以几个实际的例子说明ansible怎样把这些操作关联到一个个task上，这里恐怕不能涉及到所有的操作，只是列举一些常见的或者是容易出错的模块操作。</p>
+<h1>举例</h1>
+<p>ansible的所有操作都是基于模块，在使用ansible时一定要建立起这个概念，比如你要新建一个文件或目录是使用file模块，拷贝一个文件到远程主机可使用copy模块或synchronize模块，要执行一个命令是使用shell模块或raw模块等等。</p>
+<h2 id="基础task执行示例">基础task执行示例</h2>
+<p>以安装基础性的软件包为例，在上代码前先来说明一下ansible模块的目录组成结构，ansible把多个需要执行的task编排组织起来就组织成ansible的playbook，一个playbook的格式如下：</p>
+<pre><code>---
+- hosts: webservers
+  vars:
+    http_port: 80
+    max_clients: 200
+  remote_user: root
+  tasks:
+  - name: ensure apache is at the latest version
+    yum: name=httpd state=latest
+  - name: write the apache config file
+    template: src=/srv/httpd.j2 dest=/etc/httpd.conf
+    notify:
+    - restart apache
+  - name: ensure apache is running (and enable it at boot)
+    service: name=httpd state=started enabled=yes
+  handlers:
+    - name: restart apache
+      service: name=httpd state=restarted
+</code></pre>
+<p>把上边的代码保存为一个以<code>.yml</code>或<code>.yaml</code>结尾的文件就可以完成软件安装等工作。以上代码来源<a target="_blank" rel="noopener" href="http://docs.ansible.com/ansible/playbooks_intro.html">这里</a>。</p>
+<p>简单的编写一个playbook就能胜任许多工作，但andible的roles特性把playbook变得更为灵活，roles使ansible适应更为复杂的环境。要使用ansible的roles特性你得要遵守它的目录组成方式，类似如下：</p>
+<pre><code>ansible@ansible:~/playbooks/base/basic_setings_root$ tree .
+.
+├── hosts
+├── roles
+│   ├── add_route
+│   │   └── tasks
+│   │       └── main.yml
+│   ├── chg_root_passwd
+│   │   └── tasks
+│   │       └── main.yml
+│   ├── cron_service
+│   │   └── tasks
+│   │       └── main.yml
+│   ├── cron_timesync
+│   │   └── tasks
+│   │       └── main.yml
+│   └── install_pkg
+│       └── tasks
+│           └── main.yml
+└── site.yml
+</code></pre>
+<p>更详细关于anisble roles的说明请参考<a target="_blank" rel="noopener" href="http://docs.ansible.com/ansible/playbooks_roles.html">这里</a></p>
+<p>下边我们就编写一个roles来完成软件包的安装，操作如下：</p>
+<pre><code>ansible@ansible:/tmp/playbook/install_pkg$ pwd
+/tmp/playbook/install_pkg
+ansible@ansible:/tmp/playbook/install_pkg$ mkdir -pv roles/install_pkg/&#123;task,files&#125;
+mkdir: created directory ‘roles’
+mkdir: created directory ‘roles/install_pkg’
+mkdir: created directory ‘roles/install_pkg/task’
+mkdir: created directory ‘roles/install_pkg/files’
+ansible@ansible:/tmp/playbook/install_pkg$ touch site.yml
+ansible@ansible:/tmp/playbook/install_pkg$ ls
+roles  site.yml
+ansible@ansible:/tmp/playbook/install_pkg$ tree .
+.
+├── roles
+│   └── install_pkg
+│       ├── files
+│       └── task
+└── site.yml
+
+4 directories, 1 file
+ansible@ansible:/tmp/playbook/install_pkg$ vim roles/install_pkg/task/main.yml
+---
+- name: install some pkg
+  apt: name=&#123;&#123; items &#125;&#125; state=present
+  with_item:
+     - vim
+     - ntpdate
+  tags: ins_pkg
+ansible@ansible:/tmp/playbook/install_pkg$ vim site.yml
+---
+- hosts: server
+  remote_user: root
+  roles:
+    - install_pkg
+
+ansible@ansible:/tmp/playbook/install_pkg$ vim hosts  
+[server]
+172.31.11.71
+
+# 执行以下命令就可以执行我们定义的task
+ansible@ansible:/tmp/playbook/install_pkg$ ansible-playbook site.yml -i hosts -k
+SSH password: 
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [172.31.11.71]
+
+PLAY RECAP *********************************************************************
+172.31.11.71               : ok=1    changed=0    unreachable=0    failed=0 
+
+# 我这里的目标主机上已安装过vim和ntpdate两个软件包，所以输出状态changed是0  
+</code></pre>
+<p>如果在使用ansible时不熟悉命令,可以用<code>ansible --help</code>查看ansible命令的帮助信息，用<code>ansible-playbook --help</code>查看ansible-playbook命令的帮助信息，用<code>ansible-doc module-name</code>来查看某个模块的使用帮助信息，<code>ansible-doc -l</code>可以列出可用的模块。善于使用这些命令可以让你更快熟悉ansible的使用。</p>
+<h2 id="nginx部署">nginx部署</h2>
+<p>在<a target="_blank" rel="noopener" href="http://zhaochj.github.io/make-nginx-template/">nginx模板制作</a>中讲述了源码编译安装一个nginx并导入几个优秀的第三方模块，后期的批量部署会以此为模板，利用ansible工具部署nginx环境。</p>
+<p>同样采用roles的方式来组织部署nginx环境的这个roles，目录结构如下：</p>
+<pre><code>ansible@ansible:/tmp/playbook/dep_nginx$ pwd
+/tmp/playbook/dep_nginx
+ansible@ansible:/tmp/playbook/dep_nginx$ ls
+hosts  roles  site.yml
+ansible@ansible:/tmp/playbook/dep_nginx$ tree .
+.
+├── hosts
+├── roles
+│   └── dep_nginx                     # 角色名称
+│       ├── files
+│       │   ├── nginx                 # 日志滚动时的配置文件
+│       │   ├── nginx18.sh            # 导出nginx二进制时配置文件
+│       │   ├── nginx18.tar.gz        # 打包后的二进制包
+│       │   ├── nginx.service         # systemctl风格的启动脚本
+│       │   └── sysctl.conf           # 网络优化参数配置文件
+│       ├── tasks
+│       │   └── main.yml              # 任务执行的主文件
+│       └── vars
+│           └── main.yml              # 存放变量的主文件
+└── site.yml                          # ansible-playbook的入口文件
+
+5 directories, 9 files
+</code></pre>
+<p>nginx文件内容如下：</p>
+<pre><code>ansible@ansible:/tmp/playbook/dep_nginx/roles/dep_nginx/files$ cat nginx
+/usr/local/nginx18/logs/*.log &#123;
+        daily
+        missingok
+        rotate 30
+        compress
+        delaycompress
+        notifempty
+        create 640 nginx staff
+        sharedscripts
+        postrotate
+                [ -f /var/run/nginx18.pid ] && kill -USR1 `cat /var/run/nginx18.pid`
+        endscript
+&#125;
+</code></pre>
+<p>nginx18.sh文件如下：</p>
+<pre><code>ansible@ansible:/tmp/playbook/dep_nginx/roles/dep_nginx/files$ cat nginx18.sh 
+export PATH=/usr/local/nginx18/sbin:$PATH
+</code></pre>
+<p>nginx.service文件内容如下：</p>
+<pre><code>ansible@ansible:/tmp/playbook/dep_nginx/roles/dep_nginx/files$ cat nginx.service 
+[Unit]
+Description=nginx - high performance web server 
+Documentation=http://nginx.org/en/docs/
+After=network.target
+
+[Service]
+Type=forking
+PIDFile=/var/run/nginx18.pid
+ExecStartPre=/usr/local/nginx18/sbin/nginx -t -c /usr/local/nginx18/conf/nginx.conf
+ExecStart=/usr/local/nginx18/sbin/nginx -c /usr/local/nginx18/conf/nginx.conf
+ExecReload=/usr/local/nginx18/sbin/nginx -s reload
+ExecStop=/usr/local/nginx18/sbin/nginx -s stop
+TimeoutStopSec=5
+KillMode=mixed
+
+[Install]
+WantedBy=multi-user.target
+</code></pre>
+<p>sysctl.conf文件增加的优化参数如下：</p>
+<pre><code># 调高系统的 IP 以及端口数据限制，从可以接受更多的连接
+net.ipv4.ip_local_port_range = 1500 65400
+
+#timewait 的数量
+net.ipv4.tcp_max_tw_buckets = 10000
+
+#关闭timewait 快速回收。TIME_WAIT状态的socket是否被快速回收是由tcp_tw_recycle和tcp_timestamps两个配置项共同决定的，
+#tcp_timestamps默认一般就是开启的
+net.ipv4.tcp_timestamps = 0
+net.ipv4.tcp_tw_recycle = 0
+
+#开启重用。允许将TIME-WAIT sockets 重新用于新的TCP 连接
+net.ipv4.tcp_tw_reuse = 1
+
+#开启SYN Cookies，当出现SYN 等待队列溢出时，启用cookies 来处理。
+net.ipv4.tcp_syncookies = 1
+
+#net.ipv4.tcp_max_syn_backlog参数决定了SYN_RECV状态队列的数量，一般默认值为512或者1024，即超过这个数量，系统将不再接受新的TCP连接请
+#求，一定程度上可以防止系统资源耗尽。可根据情况增加该值以接受更多的连接请求。
+#这个就是你说的tcp支持的队列数，tcp 连接超过这个队列长度，就不允许连接.
+net.ipv4.tcp_max_syn_backlog = 10240
+
+#web 应用中listen 函数的backlog 默认会给我们内核参数的net.core.somaxconn 限制到128，而nginx 定义的NGX_LISTEN_BACKLOG 默认为511，所以有必要调整这个值。
+net.core.somaxconn = 2048
+
+#当keepalive 起用的时候，TCP 发送keepalive 消息的频度。缺省是2小时
+net.ipv4.tcp_keepalive_time = 30
+
+#表示如果套接字由本端要求关闭，这个参数决定了它保持在FIN-WAIT-2状态的时间。
+net.ipv4.tcp_fin_timeout = 20
+</code></pre>
+<p>tasks目录下的main.yml文件内容如下：</p>
+<pre><code>ansible@ansible:/tmp/playbook/dep_nginx/roles/dep_nginx$ cat tasks/main.yml
+
+---
+- name: 安装nginx依赖包
+  apt: name=&#123;&#123; item &#125;&#125; state=present
+  with_items:
+       - openssl
+       - libssl1.0.0
+       - libssl-dev
+       - zlib1g
+       - libpcre3 
+       - libpcre3-dev
+  when: ansible_distribution == "Debian" and ansible_distribution_major_version == "8"
+  tags: depend_pkg
+
+- name: copy nginx18.tar.gz to remote host
+  synchronize: src=nginx18.tar.gz dest=/usr/local checksum=yes compress=yes perms=yes
+  when: ansible_distribution == "Debian" and ansible_distribution_major_version == "8"
+  tags: copy_nginx18
+
+- name: Unpack the nginx18.tar.gz
+  shell: tar xf nginx18.tar.gz
+  args:
+    chdir: "&#123;&#123; nginx_work_dir &#125;&#125;"
+  when: ansible_distribution == "Debian" and ansible_distribution_major_version == "8"
+  tags: unpack_nginx
+
+- name: 创建临时目录
+  file: path=/var/tmp/nginx18/&#123;&#123; item &#125;&#125; group=root owner=root mode=0755 state=directory
+  with_items:
+       - proxy
+       - fastcgi
+       - uwsgi
+       - scgi
+  when: ansible_distribution == "Debian" and ansible_distribution_major_version == "8"
+  tags: create_dir
+
+- name: add nginx user
+  user: name=nginx shell=/usr/sbin/nologin state=present
+  when: ansible_distribution == "Debian" and ansible_distribution_major_version == "8"
+  tags: adduser_nginx
+
+- name: export binary file
+  copy: src=nginx18.sh dest=/etc/profile.d group=root owner=root mode=0644
+  when: ansible_distribution == "Debian" and ansible_distribution_major_version == "8"
+  tags: export_binary
+
+- name: systemctl way manage nginx
+  copy: src=nginx.service dest=/lib/systemd/system group=root owner=root mode=0644
+  when: ansible_distribution == "Debian" and ansible_distribution_major_version == "8"
+  tags: nginx.service
+
+- name: nginx.conf syntax highlighting
+  copy: src=.vim dest=&#123;&#123; ansible_env.HOME &#125;&#125; group=root owner=root mode=0644
+  when: ansible_distribution == "Debian" and ansible_distribution_major_version == "8"
+  tags: nginx.vim
+
+- name: 配置日志滚动，默认保留30天的日志备份
+  copy: src=nginx dest=/etc/logrotate.d group=root owner=root mode=0644
+  when: ansible_distribution == "Debian" and ansible_distribution_major_version == "8"
+  tags: log_rotate
+
+- name: copy sysctl.conf,网络优化
+  copy: src=sysctl.conf dest=/etc group=root owner=root mode=0644 backup=yes
+  when: ansible_distribution == "Debian" and ansible_distribution_major_version == "8"
+  tags: copy_sysctl.conf
+
+- name: exec sysctl -p
+  shell: /sbin/sysctl -p
+  when: ansible_distribution == "Debian" and ansible_distribution_major_version == "8"
+  tags: reload_sysctl.conf
+  
+- name: nginx service power up
+  service: name=nginx.service state=started enabled=yes
+  when: ansible_distribution == "Debian" and ansible_distribution_major_version == "8"
+  tags: start_nginx
+</code></pre>
+<p>vars目录下的main.yml文件内容如下：</p>
+<pre><code>ansible@ansible:/tmp/playbook/dep_nginx/roles/dep_nginx$ cat vars/main.yml
+
+---
+nginx_work_dir: /usr/local
+</code></pre>
+<p>site.yml文件内容如下：</p>
+<pre><code>ansible@ansible:/tmp/playbook/dep_nginx$ cat site.yml
+
+---
+- hosts: server
+  remote_user: root
+  roles:
+    
+    - dep_nginx
+</code></pre>
+<p>hosts文件的内容类似这样：</p>
+<pre><code>ansible@ansible:/tmp/playbook/dep_nginx$ cat hosts 
+[server]
+192.168.0.67
+192.168.0.68
+</code></pre>
+<p>hosts文件是的主机就是所要部署nginx环境的主。</p>
+<p>运行这个以roles组织起的anisble-playbook，只需要运行如下命令，输入远程主机的root密码：</p>
+<pre><code>ansible@ansible:/tmp/playbook/dep_nginx$ ansible-playbook site.yml -i hosts -k 
+SSH password: 
+</code></pre>
+<h1>总结</h1>
+<p>示例就列举上边两个，各种环境下的需求各样，不可能面面俱到。利用ansible的roles特性能完成许多任务，要想熟练使用ansible这个工具只有多练习，善于运用anisble的帮助信息。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2016/03/24/2016-03-24-system-initialization-use-ansible/">ansible编写系统初始化playbook</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页"></a></p>
+        <p><span>发布时间:</span>2016-03-24, 21:30:00</p>
+        <p><span>最后更新:</span>2020-08-08, 23:29:11</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2016/03/24/2016-03-24-system-initialization-use-ansible/" title="ansible编写系统初始化playbook">http://yoursite.com/2016/03/24/2016-03-24-system-initialization-use-ansible/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2016/03/24/2016-03-24-system-initialization-use-ansible/　　作者: " title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2016/03/28/2016-03-28-deploy-redis-cluster-use-ansible/">
+                    ansible playbook定义redis-cluster
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2016/03/18/2016-03-18-text-process/">
+                    批量替换文件中指定字符串
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">目的</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">主机角色及任务梳理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BB%E6%9C%BA%E8%A7%92%E8%89%B2%E5%88%86%E7%B1%BB"><span class="toc-number">2.1.</span> <span class="toc-text">主机角色分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BB%E6%9C%BA%E6%89%80%E9%9C%80%E6%89%A7%E8%A1%8Ctask"><span class="toc-number">2.2.</span> <span class="toc-text">主机所需执行task</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">举例</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80task%E6%89%A7%E8%A1%8C%E7%A4%BA%E4%BE%8B"><span class="toc-number">3.1.</span> <span class="toc-text">基础task执行示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nginx%E9%83%A8%E7%BD%B2"><span class="toc-number">3.2.</span> <span class="toc-text">nginx部署</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"ansible编写系统初始化playbook　| Neal记录　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2016/03/28/2016-03-28-deploy-redis-cluster-use-ansible/" title="上一篇: ansible playbook定义redis-cluster">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2016/03/18/2016-03-18-text-process/" title="下一篇: 批量替换文件中指定字符串">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2020/08/08/test-md/">test.md</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/15/2016-09-15-os%E6%A8%A1%E5%9D%97%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95%E6%95%B4%E7%90%86/">os模块常用方法整理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/14/2016-09-14-%E5%AD%97%E7%AC%A6%E7%9A%84%E7%BC%96%E7%A0%81%E4%B8%8E%E8%A7%A3%E7%A0%81/">python中的编码与解码</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/13/2016-09-13-tornado%E9%85%8D%E7%BD%AE%E8%A7%A3%E6%9E%90/">tornado配置解析</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/10/2016-09-10-tornado%E5%AF%B9http%E8%AF%B7%E6%B1%82%E7%9A%84%E8%BF%94%E5%9B%9E/">tornado怎样返回信息</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/08/2016-09-07-tornado-http%E5%A4%84%E7%90%86%E8%AF%B7%E6%B1%82%E6%8A%A5%E6%96%87/">tornado处理请求报文</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/21/2016-08-21-%E7%BA%BF%E7%A8%8B%E7%9A%84condition%E7%89%B9%E6%80%A7/">python线程中的condition特性</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/2016-08-14-%E7%BA%BF%E7%A8%8B%E7%9A%84daemon%E4%B8%8Ejoin%E7%89%B9%E6%80%A7/">线程的daemon与join特性</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/2016-08-14-%E7%BA%BF%E7%A8%8B%E7%9A%84event%E7%89%B9%E6%80%A7/">python多线程间通信机制-event</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/24/docker/2016-06-24-docker%E5%9F%BA%E7%A1%80/">docker基础</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/16/2016-05-16-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%8F%8C%E7%AB%AF%E9%98%9F%E5%88%97-%E7%8E%AF%E7%8A%B6%E9%98%9F%E5%88%97/">python数据结构-双端队列-环状队列</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/16/2016-05-16-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-hash/">python数据结构-hash</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/15/2016-05-15-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%8D%95%E7%AB%AF%E9%98%9F%E5%88%97/">python数据结构之队列</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/14/2016-05-14-%E6%A0%88%E8%BF%90%E7%94%A8-%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%A7%A3%E6%9E%90/">栈的运用-表达式解析</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/14/2016-05-14-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%88/">python数据结构之栈</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/12/2016-05-12-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E9%93%BE%E8%A1%A8/">python数据结构-链表</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/12/2016-05-12-%E6%A8%A1%E5%9D%97%E5%8C%96/">python的模块化</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/12/2016-05-12-%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/">python异常处理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/10/2016-05-10-property%E7%9A%84%E5%AE%9E%E7%8E%B0/">python的property实现原理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/09/2016-05-09-%E6%8F%8F%E8%BF%B0%E5%99%A8/">python描述器</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/09/2016-05-09-with%E8%AF%AD%E6%B3%95/">python的with语法</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/08/2016-05-08-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1-%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95-%E7%B1%BB%E8%A3%85%E9%A5%B0%E5%99%A8-%E5%8D%95%E4%BE%8B/">python的魔术方法、类装饰器、单例</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/08/2016-05-08-%E5%8F%8D%E5%B0%84/">python反射</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/07/2016-05-07-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1-%E5%A4%9A%E7%BB%A7%E6%89%BF-MRO-MIXIN/">python面向对象的多继承-MIXIN</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/07/2016-05-07-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1-%E7%BB%A7%E6%89%BF/">python面向对象的继承</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/06/2016-05-06-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1-%E5%B0%81%E8%A3%85-property/">python面向对象-封装</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/06/2016-05-06-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1-%E5%9F%BA%E7%A1%80-%E5%B0%81%E8%A3%85/">python面向对象基础理论</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/05/2016-05-05-%E5%B8%A6%E5%8F%82%E6%95%B0%E7%9A%84%E8%A3%85%E9%A5%B0%E5%99%A8/">python带参数的装饰器</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/04/2016-05-04-%E8%A3%85%E9%A5%B0%E5%99%A8/">python装饰器</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/03/2016-05-03-%E5%88%97%E8%A1%A8%E8%A7%A3%E6%9E%90/">python列表解析</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/01/2016-05-01-%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%93%8D%E4%BD%9C/">python的字符串操作</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/30/2016-04-30-built-CA-and-certificate/">自建CA及证颁发证书shell脚本</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/07/2016-04-07-python-learn-decorator/">python装饰器</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/06/2016-04-06-deploy-gitlab-use-shell/">使用shell部署gitlab</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/28/2016-03-28-deploy-redis-cluster-use-ansible/">ansible playbook定义redis-cluster</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/24/2016-03-24-system-initialization-use-ansible/">ansible编写系统初始化playbook</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/18/2016-03-18-text-process/">批量替换文件中指定字符串</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/17/2016-03-17-python-learn-function/">python函数</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/16/2016-03-16-python-learn-list-and-tuple/">python的列表与元组</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/16/2016-03-16-python-learn-conditional-and-circulation/">python条件判断及循环语句</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/09/2016-03-09-make-nginx-template/">nginx编译安装并引入优秀的第三方模块</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/03/2016-03-02-logs-del-shell-v3/">日志数据删除脚本v3</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/03/2016-03-03-deploy-gitlib/">shell脚本部署gitlab环境</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/02/2016-03-02-logs-del-shell-v2/">日志数据删除脚本v1</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/02/2016-03-02-logs-del-shell-v1/">日志数据删除脚本v1</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2020 Neal
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

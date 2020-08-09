@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="Neal" />
+
+
+
+<meta name="description" content="python学习笔记之描述器">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python描述器">
+<meta property="og:url" content="http://yoursite.com/2016/05/09/2016-05-09-%E6%8F%8F%E8%BF%B0%E5%99%A8/index.html">
+<meta property="og:site_name" content="Neal记录">
+<meta property="og:description" content="python学习笔记之描述器">
+<meta property="og:locale">
+<meta property="article:published_time" content="2016-05-09T14:00:00.000Z">
+<meta property="article:modified_time" content="2020-08-08T15:29:11.633Z">
+<meta property="article:author" content="Neal">
+<meta property="article:tag" content="描述器">
+<meta name="twitter:card" content="summary">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="Neal记录" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/img/snail.png">
+
+
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>python描述器 | Neal记录</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: false,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.0.0"></head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/snail.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/"></a></h1>
+        </hgroup>
+
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/MIXIN/" rel="tag">MIXIN</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/base64/" rel="tag">base64</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/decode/" rel="tag">decode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/define/" rel="tag">define</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker%E5%9F%BA%E7%A1%80/" rel="tag">docker基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/encode/" rel="tag">encode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gitlab/" rel="tag">gitlab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gitlab%E9%83%A8%E7%BD%B2/" rel="tag">gitlab部署</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hash/" rel="tag">hash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/logs-del/" rel="tag">logs del</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/options/" rel="tag">options</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/property%E5%AE%9E%E7%8E%B0/" rel="tag">property实现</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python%E6%A0%87%E5%87%86%E5%BA%93%EF%BC%8Cos%E6%A8%A1%E5%9D%97/" rel="tag">python标准库，os模块</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell%EF%BC%8Cpython/" rel="tag">shell，python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tornado/" rel="tag">tornado</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/with%E8%AF%AD%E6%B3%95/" rel="tag">with语法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%87%BD%E6%95%B0/" rel="tag">函数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%97%E8%A1%A8%E8%A7%A3%E6%9E%90/" rel="tag">列表解析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%97%E8%A1%A8%EF%BC%8C%E5%85%83%E7%BB%84/" rel="tag">列表，元组</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8F%8C%E7%AB%AF%E9%98%9F%E5%88%97%EF%BC%8C%E7%8E%AF%E7%8A%B6%E9%98%9F%E5%88%97/" rel="tag">双端队列，环状队列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8F%8D%E5%B0%84/" rel="tag">反射</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%84%E7%90%86%E8%AF%B7%E6%B1%82/" rel="tag">处理请求</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B%EF%BC%8Cevent%E7%89%B9%E6%80%A7/" rel="tag">多线程，event特性</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BB%A7%E6%89%BF%EF%BC%8CMRO/" rel="tag">多继承，MRO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/" rel="tag">字符串</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%82%E5%B8%B8/" rel="tag">异常</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8F%8F%E8%BF%B0%E5%99%A8/" rel="tag">描述器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD%EF%BC%8C%E5%BE%AA%E7%8E%AF/" rel="tag">条件判断，循环</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%88/" rel="tag">栈</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%88%E8%BF%90%E7%94%A8%EF%BC%8C%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%A7%A3%E6%9E%90/" rel="tag">栈运用，表达式解析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A8%A1%E5%9D%97%E5%8C%96/" rel="tag">模块化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%B3%BB%E7%BB%9F%E5%88%9D%E5%A7%8B%E5%8C%96/" rel="tag">系统初始化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E7%A8%8B%EF%BC%8Ccondition/" rel="tag">线程，condition</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%A7%E6%89%BF/" rel="tag">继承</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E5%BB%BACA/" rel="tag">自建CA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A3%85%E9%A5%B0%E5%99%A8/" rel="tag">装饰器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A3%85%E9%A5%B0%E5%99%A8%EF%BC%8Cdecorator/" rel="tag">装饰器，decorator</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BF%94%E5%9B%9E%E8%AF%B7%E6%B1%82/" rel="tag">返回请求</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%85%8D%E7%BD%AE%E8%A7%A3%E6%9E%90/" rel="tag">配置解析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%93%BE%E8%A1%A8/" rel="tag">链表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%98%9F%E5%88%97/" rel="tag">队列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" rel="tag">面向对象</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%EF%BC%8C%E5%B0%81%E8%A3%85/" rel="tag">面向对象，封装</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95%EF%BC%8C%E7%B1%BB%E8%A3%85%E9%A5%B0%E5%99%A8%EF%BC%8C%E5%8D%95%E4%BE%8B/" rel="tag">魔术方法，类装饰器，单例</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">专注于linux</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页"></a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/snail.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页"></a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-2016-05-09-描述器" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/05/09/2016-05-09-%E6%8F%8F%E8%BF%B0%E5%99%A8/" class="article-date">
+      <time datetime="2016-05-09T14:00:00.000Z" itemprop="datePublished">2016-05-09</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      python描述器
+    </h1>
+  
+
+        <!-- 开始添加字数统计-->
+        
+         <!-- 添加完成 -->
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/python%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">python学习笔记</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%8F%8F%E8%BF%B0%E5%99%A8/" rel="tag">描述器</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>python学习笔记之描述器</p>
+<a id="more"></a>
+<h2 id="描述器">描述器</h2>
+<p>一个类实现了<code>__get__</code>、<code>__set__</code>、<code>__delete__</code>三个方法，这个类就叫描述器</p>
+<p>直接来看一个描述器的实现，如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Number</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self,name</span>):</span></span><br><span class="line">        self.name = name</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__get__</span>(<span class="params">self,instance,cls</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;call __get__&#x27;</span>)</span><br><span class="line">        <span class="keyword">return</span> instance.__dict__[self.name]</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__set__</span>(<span class="params">self,instance,value</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;call __set__&#x27;</span>)</span><br><span class="line">        <span class="keyword">if</span> isinstance(value,(int,float)):</span><br><span class="line">            instance.__dict__[self.name] = value</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">raise</span> TypeError(<span class="string">&#x27;execepted int or float&#x27;</span>)</span><br><span class="line">            </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__delete__</span>(<span class="params">self,instance</span>):</span></span><br><span class="line">        <span class="keyword">del</span> instance.__dict__[self.name]</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span>:</span></span><br><span class="line">    x = Number(<span class="string">&#x27;x&#x27;</span>)</span><br><span class="line">    y = Number(<span class="string">&#x27;y&#x27;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self,x,y</span>):</span></span><br><span class="line">        self.x = x</span><br><span class="line">        self.y = y</span><br></pre></td></tr></table></figure>
+<p>这样就定义了一个描述器<code>Number</code>类，这个类的作用是描述实例化<code>Point</code>类时<code>x</code>和<code>y</code>变量的类型必须为整型或浮点型，如果不满足这两种类型中的一个，那抛出TypeError的异常。为了验证代码的调用关系，有意在<code>Number</code>类中加了一些<code>print</code>语句，在实例代码中应该把这语句去除。现在来实际实例化<code>Point</code>类试试：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p1 = Point(<span class="number">2</span>,<span class="number">8</span>)</span><br></pre></td></tr></table></figure>
+<pre><code>call __set__
+call __set__
+</code></pre>
+<p>当执行<code>p1 = Point(2,8)</code>时发生了什么呢？</p>
+<p>1.当python解释器解析到</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span>:</span></span><br><span class="line">    x = Number(<span class="string">&#x27;x&#x27;</span>)</span><br><span class="line">    y = Number(<span class="string">&#x27;y&#x27;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self,x,y</span>):</span></span><br><span class="line">        self.x = x</span><br><span class="line">        self.y = y</span><br></pre></td></tr></table></figure>
+<p>代码块时，解释器会创建一个<code>Point</code>类对象，此对象中有<code>x</code>类变量，且此变量指向<code>Number</code>类的一个实例，有<code>y</code>类变量，且此变量指向<code>Number</code>类的另一个实例；解释器还会创建一个<code>__init__</code>函数，此函数接收两个参数。</p>
+<p>2.当解释器执行到<code>p1 = Point(2,8)</code>时，<code>Point</code>类中的<code>__init__</code>构建函数被执行，执行以下两代码</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">self.x = x</span><br><span class="line">self.y = y</span><br></pre></td></tr></table></figure>
+<p>解释器先执行<code>self.x = x</code>代码，这里的<code>self.x</code>是一个变量对象，等号后边的<code>x</code>是指向类变量<code>x = Number('x')</code>中的<code>Number</code>类实例，这时解释器会执行<code>Number</code>类中的<code>__set__</code>函数，把<code>p1</code>实例传递给<code>instance</code>这个形参，把<code>2</code>传递给<code>value</code>这个形参，执行此函数体的代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">def __set__(self,instance,value):</span><br><span class="line">        print(&#39;call __set__&#39;)</span><br><span class="line">        if isinstance(value,(int,float)):</span><br><span class="line">            instance.__dict__[self.name] &#x3D; value</span><br><span class="line">        else:</span><br><span class="line">            raise TypeError(&#39;execepted int or float&#39;)</span><br></pre></td></tr></table></figure>
+<p>首先打印出<code>call __set__</code>，再执行if语句，为True时把<code>p1</code>实例中<code>__dict__</code>这个特殊方法中key为<code>x</code>的值指向<code>2</code>；如果if语句的判断结果为False，那抛出异常。</p>
+<p>接着解释器往下执行代码，开始执行构建函数中的<code>self.y = y</code>语句，这个过程与执行<code>self.x = x</code>语句一样。这样就完成了<code>p1 = Point(2,8)</code>这个语句的执行，其<strong>实质就是会去执行Number类的<code>__set__</code>函数</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p1.x</span><br></pre></td></tr></table></figure>
+<pre><code>call __get__
+
+
+
+
+
+2
+</code></pre>
+<p>当执行上边的<code>p1.x</code>时发生了什么？</p>
+<p>执行<code>p1.x</code>是去调用<code>Point</code>类的实例变量<code>x</code>，从上边的分析可知，这个实例变量是指向<code>Number('x')</code>这个实例，这时解释器会执行<code>Number</code>类的<code>__get__</code>方法，会把<code>p1</code>这个实例名作为变量传递给<code>instance</code>这个形参，把<code>p1</code>的类名作为变量传递给<code>cls</code>，代码如下：</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__get__</span>(<span class="params">self,instance,cls</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;call __get__&#x27;</span>)</span><br><span class="line">        <span class="keyword">return</span> instance.__dict__[self.name]</span><br></pre></td></tr></table></figure>
+<p>先打印出<code>call __get__</code>，然后取出<code>p1</code>实例中<code>__dict__</code>中key为<code>x</code>的值返回，这样就得到执行<code>p1 = Point(2,8)</code>语句时<code>2</code>这个数字。</p>
+<p>总结起来，访问一个使用了描述器的类的实例属性时，<strong>其实质是访问了描述器的<code>__get__</code>函数</strong>。</p>
+<p>其实访问<code>p1.x</code>和访问<code>Point.x.__get__(p1,Point)</code>的过程是一样的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p1.x = <span class="number">10</span></span><br></pre></td></tr></table></figure>
+<pre><code>call __set__
+</code></pre>
+<p>当执行上边的<code>p1.x = 10</code>语句时发生了什么呢？</p>
+<p>执行<code>p1.x = 10</code>是想把<code>Point</code>类的<code>p1</code>实例的实例变量指向一个数字<code>10</code>，实例变量<code>x</code>是指向<code>Number('x')</code>这个实例，其实质是去调用<code>Number</code>类的<code>__set__</code>方法，上边已对调用<code>__set__</code>函数进行了详细了分析，不再赘述。</p>
+<p>其实执行<code>p1.x = 10</code>和执行<code>Point.x.__set__(p1.10)</code>的过程是一样的</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p1.x</span><br></pre></td></tr></table></figure>
+<pre><code>call __get__
+
+
+
+
+
+10
+</code></pre>
+<p>再来给<code>x</code>一个不是<code>int</code>或<code>float</code>型的字符，如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p1.x = <span class="string">&#x27;zhaochj&#x27;</span></span><br></pre></td></tr></table></figure>
+<pre><code>call __set__
+
+
+
+---------------------------------------------------------------------------
+
+TypeError                                 Traceback (most recent call last)
+
+&lt;ipython-input-8-47a1681546d4&gt; in &lt;module&gt;()
+----&gt; 1 p1.x = 'zhaochj'
+
+
+&lt;ipython-input-2-087bfda6d4c9&gt; in __set__(self, instance, value)
+     12             instance.__dict__[self.name] = value
+     13         else:
+---&gt; 14             raise TypeError('execepted int or float')
+     15 
+     16     def __delete__(self,instance):
+
+
+TypeError: execepted int or float
+</code></pre>
+<p>在类型检查时没有通过，所以抛出我们自定义的异常信息。</p>
+<p>在<code>Point</code>类中，按理说<code>类变量x</code>是可以像<code>Point.x</code>来访问的，但执行时，如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Point.x</span><br></pre></td></tr></table></figure>
+<pre><code>call __get__
+
+
+
+---------------------------------------------------------------------------
+
+AttributeError                            Traceback (most recent call last)
+
+&lt;ipython-input-9-7a7eae6dfbec&gt; in &lt;module&gt;()
+----&gt; 1 Point.x
+
+
+&lt;ipython-input-2-087bfda6d4c9&gt; in __get__(self, instance, cls)
+      5     def __get__(self,instance,cls):
+      6         print('call __get__')
+----&gt; 7         return instance.__dict__[self.name]
+      8 
+      9     def __set__(self,instance,value):
+
+
+AttributeError: 'NoneType' object has no attribute '__dict__'
+</code></pre>
+<p>这是因为在调用<code>__get__</code>方法时<code>instance</code>参数接收到了一个<code>None</code>对象，这是因为类<code>Point</code>并没有被实例化，所以<code>return</code>时会报错。可以对<code>__get__</code>函数做如下修正，如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NumberFix</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self,name</span>):</span></span><br><span class="line">        self.name = name</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__get__</span>(<span class="params">self,instance,cls</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;call __get__&#x27;</span>)</span><br><span class="line">        <span class="keyword">if</span> instance <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> instance.__dict__[self.name]</span><br><span class="line">        <span class="keyword">return</span> self</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__set__</span>(<span class="params">self,instance,value</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;call __set__&#x27;</span>)</span><br><span class="line">        <span class="keyword">if</span> isinstance(value,(int,float)):</span><br><span class="line">            instance.__dict__[self.name] = value</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">raise</span> TypeError(<span class="string">&#x27;execepted int or float&#x27;</span>)</span><br><span class="line">            </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__delete__</span>(<span class="params">self,instance</span>):</span></span><br><span class="line">        <span class="keyword">del</span> instance.__dict__[self.name]</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point2</span>:</span></span><br><span class="line">    x = NumberFix(<span class="string">&#x27;x&#x27;</span>)</span><br><span class="line">    y = NumberFix(<span class="string">&#x27;y&#x27;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self,x,y</span>):</span></span><br><span class="line">        self.x = x</span><br><span class="line">        self.y = y</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Point2.x</span><br></pre></td></tr></table></figure>
+<pre><code>call __get__
+
+
+
+
+
+&lt;__main__.NumberFix at 0x7f8030321550&gt;
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p2 = Point2(<span class="number">4</span>,<span class="number">7</span>)</span><br></pre></td></tr></table></figure>
+<pre><code>call __set__
+call __set__
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Point2.x</span><br></pre></td></tr></table></figure>
+<pre><code>call __get__
+
+
+
+
+
+&lt;__main__.NumberFix at 0x7f8030321550&gt;
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p2.x</span><br></pre></td></tr></table></figure>
+<pre><code>call __get__
+
+
+
+
+
+4
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p2.x = <span class="number">30</span></span><br></pre></td></tr></table></figure>
+<pre><code>call __set__
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p2.x</span><br></pre></td></tr></table></figure>
+<pre><code>call __get__
+
+
+
+
+
+30
+</code></pre>
+<p>这样，<code>NumberFix</code>算是一个完整的描述器。</p>
+<p>这样，<code>NumberFix</code>这个描述器就完成了对实例化类<code>Point2</code>时传入参数类型的限制，允许的类型在描述器<code>NumberFix</code>的<code>__set__</code>函数中进行设置。</p>
+<p>上边的例子中都是对各个参数进行同一类型的检查，如果我们要对每个参数都做不同的类型检查呢？比如要求<code>x</code>参数为<code>int</code>型，<code>y</code>参数为<code>str</code>型。对上边的描述器做如下改进：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TypeCheck</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self,name,expected_type</span>):</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.expected_type = expected_type</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__get__</span>(<span class="params">self,instance,cls</span>):</span></span><br><span class="line">        <span class="keyword">if</span> instance <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> instance.__dict__[self.name]</span><br><span class="line">        <span class="keyword">return</span> self</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__set__</span>(<span class="params">self,instance,value</span>):</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> isinstance(value,self.expected_type):</span><br><span class="line">            <span class="keyword">raise</span> TypeError(<span class="string">&#x27;expected type &#123;0&#125;&#x27;</span>.format(self.expected_type))</span><br><span class="line">        instance.__dict__[self.name] = value</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__delete__</span>(<span class="params">self,instance</span>):</span></span><br><span class="line">        <span class="keyword">del</span> instance.__dict__[self.name]</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point3</span>:</span></span><br><span class="line">    x = TypeCheck(<span class="string">&#x27;x&#x27;</span>,(int,))</span><br><span class="line">    y = TypeCheck(<span class="string">&#x27;y&#x27;</span>,(str,))</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self,x,y</span>):</span></span><br><span class="line">        self.x = x</span><br><span class="line">        self.y = y</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p3 = Point3(<span class="number">10</span>,<span class="string">&#x27;zhaochj&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p3.x</span><br></pre></td></tr></table></figure>
+<pre><code>10
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p3.y</span><br></pre></td></tr></table></figure>
+<pre><code>'zhaochj'
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p3.x = <span class="number">40</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p3.x</span><br></pre></td></tr></table></figure>
+<pre><code>40
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p4 = Point3(<span class="number">10</span>,<span class="number">30</span>)</span><br></pre></td></tr></table></figure>
+<pre><code>---------------------------------------------------------------------------
+
+TypeError                                 Traceback (most recent call last)
+
+&lt;ipython-input-67-7765c7ef841b&gt; in &lt;module&gt;()
+----&gt; 1 p4 = Point3(10,30)
+
+
+&lt;ipython-input-58-20cc1f0ef40f&gt; in __init__(self, x, y)
+      5     def __init__(self,x,y):
+      6         self.x = x
+----&gt; 7         self.y = y
+
+
+&lt;ipython-input-51-d7bab526d123&gt; in __set__(self, instance, value)
+     11     def __set__(self,instance,value):
+     12         if not isinstance(value,self.expected_type):
+---&gt; 13             raise TypeError('expected type &#123;0&#125;'.format(self.expected_type))
+     14         instance.__dict__[self.name] = value
+     15 
+
+
+TypeError: expected type (&lt;class 'str'&gt;,)
+</code></pre>
+<p>这样就可以实现对不同的变量限制不同的类型，当对<code>x</code>和<code>y</code>的类型有变更时只需要修改<code>Point3</code>类即可。</p>
+<p>其实还可以使用装饰器来达到同样的效果，这是一个装饰类<code>TypeCheck</code>的装饰器，代码实现如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> wraps</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">typeinsert</span>(<span class="params">**kwargs</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span>(<span class="params">cls</span>):</span></span><br><span class="line"><span class="meta">        @wraps(cls)</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">wrap</span>(<span class="params">**kwargs</span>):</span></span><br><span class="line">            <span class="keyword">for</span> k,v <span class="keyword">in</span> kwargs.items():</span><br><span class="line">                setattr(cls,k,TypeCheck(k,v))</span><br><span class="line">            <span class="keyword">return</span> cls</span><br><span class="line">        <span class="keyword">return</span> wrap</span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@typeinsert(x=int,y=float,z=str,m=str)</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Spam</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self,x,y,z,m</span>):</span></span><br><span class="line">        self.x = x</span><br><span class="line">        self.y = y</span><br><span class="line">        self.z = z</span><br><span class="line">        self.m = m</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">s = Spam(x=<span class="string">&#x27;dfd&#x27;</span>,y=<span class="number">10</span>,z=<span class="number">10</span>,m=<span class="number">45</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+<p>好像没有达到预想的效果，没有想明白，相关视频在“09-面向对象-8”</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2016/05/09/2016-05-09-%E6%8F%8F%E8%BF%B0%E5%99%A8/">python描述器</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页"></a></p>
+        <p><span>发布时间:</span>2016-05-09, 22:00:00</p>
+        <p><span>最后更新:</span>2020-08-08, 23:29:11</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2016/05/09/2016-05-09-%E6%8F%8F%E8%BF%B0%E5%99%A8/" title="python描述器">http://yoursite.com/2016/05/09/2016-05-09-%E6%8F%8F%E8%BF%B0%E5%99%A8/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2016/05/09/2016-05-09-%E6%8F%8F%E8%BF%B0%E5%99%A8/　　作者: " title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2016/05/10/2016-05-10-property%E7%9A%84%E5%AE%9E%E7%8E%B0/">
+                    python的property实现原理
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2016/05/09/2016-05-09-with%E8%AF%AD%E6%B3%95/">
+                    python的with语法
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%8F%E8%BF%B0%E5%99%A8"><span class="toc-number">1.</span> <span class="toc-text">描述器</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"python描述器　| Neal记录　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2016/05/10/2016-05-10-property%E7%9A%84%E5%AE%9E%E7%8E%B0/" title="上一篇: python的property实现原理">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2016/05/09/2016-05-09-with%E8%AF%AD%E6%B3%95/" title="下一篇: python的with语法">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2020/08/08/test-md/">test.md</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/15/2016-09-15-os%E6%A8%A1%E5%9D%97%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95%E6%95%B4%E7%90%86/">os模块常用方法整理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/14/2016-09-14-%E5%AD%97%E7%AC%A6%E7%9A%84%E7%BC%96%E7%A0%81%E4%B8%8E%E8%A7%A3%E7%A0%81/">python中的编码与解码</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/13/2016-09-13-tornado%E9%85%8D%E7%BD%AE%E8%A7%A3%E6%9E%90/">tornado配置解析</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/10/2016-09-10-tornado%E5%AF%B9http%E8%AF%B7%E6%B1%82%E7%9A%84%E8%BF%94%E5%9B%9E/">tornado怎样返回信息</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/08/2016-09-07-tornado-http%E5%A4%84%E7%90%86%E8%AF%B7%E6%B1%82%E6%8A%A5%E6%96%87/">tornado处理请求报文</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/21/2016-08-21-%E7%BA%BF%E7%A8%8B%E7%9A%84condition%E7%89%B9%E6%80%A7/">python线程中的condition特性</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/2016-08-14-%E7%BA%BF%E7%A8%8B%E7%9A%84daemon%E4%B8%8Ejoin%E7%89%B9%E6%80%A7/">线程的daemon与join特性</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/2016-08-14-%E7%BA%BF%E7%A8%8B%E7%9A%84event%E7%89%B9%E6%80%A7/">python多线程间通信机制-event</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/24/docker/2016-06-24-docker%E5%9F%BA%E7%A1%80/">docker基础</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/16/2016-05-16-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%8F%8C%E7%AB%AF%E9%98%9F%E5%88%97-%E7%8E%AF%E7%8A%B6%E9%98%9F%E5%88%97/">python数据结构-双端队列-环状队列</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/16/2016-05-16-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-hash/">python数据结构-hash</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/15/2016-05-15-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%8D%95%E7%AB%AF%E9%98%9F%E5%88%97/">python数据结构之队列</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/14/2016-05-14-%E6%A0%88%E8%BF%90%E7%94%A8-%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%A7%A3%E6%9E%90/">栈的运用-表达式解析</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/14/2016-05-14-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%88/">python数据结构之栈</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/12/2016-05-12-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E9%93%BE%E8%A1%A8/">python数据结构-链表</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/12/2016-05-12-%E6%A8%A1%E5%9D%97%E5%8C%96/">python的模块化</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/12/2016-05-12-%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/">python异常处理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/10/2016-05-10-property%E7%9A%84%E5%AE%9E%E7%8E%B0/">python的property实现原理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/09/2016-05-09-%E6%8F%8F%E8%BF%B0%E5%99%A8/">python描述器</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/09/2016-05-09-with%E8%AF%AD%E6%B3%95/">python的with语法</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/08/2016-05-08-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1-%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95-%E7%B1%BB%E8%A3%85%E9%A5%B0%E5%99%A8-%E5%8D%95%E4%BE%8B/">python的魔术方法、类装饰器、单例</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/08/2016-05-08-%E5%8F%8D%E5%B0%84/">python反射</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/07/2016-05-07-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1-%E5%A4%9A%E7%BB%A7%E6%89%BF-MRO-MIXIN/">python面向对象的多继承-MIXIN</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/07/2016-05-07-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1-%E7%BB%A7%E6%89%BF/">python面向对象的继承</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/06/2016-05-06-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1-%E5%B0%81%E8%A3%85-property/">python面向对象-封装</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/06/2016-05-06-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1-%E5%9F%BA%E7%A1%80-%E5%B0%81%E8%A3%85/">python面向对象基础理论</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/05/2016-05-05-%E5%B8%A6%E5%8F%82%E6%95%B0%E7%9A%84%E8%A3%85%E9%A5%B0%E5%99%A8/">python带参数的装饰器</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/04/2016-05-04-%E8%A3%85%E9%A5%B0%E5%99%A8/">python装饰器</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/03/2016-05-03-%E5%88%97%E8%A1%A8%E8%A7%A3%E6%9E%90/">python列表解析</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/01/2016-05-01-%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%93%8D%E4%BD%9C/">python的字符串操作</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/30/2016-04-30-built-CA-and-certificate/">自建CA及证颁发证书shell脚本</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/07/2016-04-07-python-learn-decorator/">python装饰器</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/06/2016-04-06-deploy-gitlab-use-shell/">使用shell部署gitlab</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/28/2016-03-28-deploy-redis-cluster-use-ansible/">ansible playbook定义redis-cluster</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/24/2016-03-24-system-initialization-use-ansible/">ansible编写系统初始化playbook</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/18/2016-03-18-text-process/">批量替换文件中指定字符串</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/17/2016-03-17-python-learn-function/">python函数</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/16/2016-03-16-python-learn-list-and-tuple/">python的列表与元组</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/16/2016-03-16-python-learn-conditional-and-circulation/">python条件判断及循环语句</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/09/2016-03-09-make-nginx-template/">nginx编译安装并引入优秀的第三方模块</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/03/2016-03-02-logs-del-shell-v3/">日志数据删除脚本v3</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/03/2016-03-03-deploy-gitlib/">shell脚本部署gitlab环境</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/02/2016-03-02-logs-del-shell-v2/">日志数据删除脚本v1</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/02/2016-03-02-logs-del-shell-v1/">日志数据删除脚本v1</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2020 Neal
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

@@ -1,0 +1,10 @@
+User-Agent: *
+Allow: /
+Disallow: /background
+Disallow: /css
+Disallow: /fancybox
+Disallow: /font-awesome
+Disallow: /img
+Disallow: /js
+Sitemap: https://zhaochj.github.io/sitemap.xml
+Sitemap: https://zhaochj.github.io/baidusitemap.xml

@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="Neal" />
+
+
+
+<meta name="description" content="python学习笔记之模块化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python的模块化">
+<meta property="og:url" content="http://yoursite.com/2016/05/12/2016-05-12-%E6%A8%A1%E5%9D%97%E5%8C%96/index.html">
+<meta property="og:site_name" content="Neal记录">
+<meta property="og:description" content="python学习笔记之模块化">
+<meta property="og:locale">
+<meta property="og:image" content="http://yoursite.com/images/2016-05-12-01.png">
+<meta property="article:published_time" content="2016-05-12T12:00:00.000Z">
+<meta property="article:modified_time" content="2020-08-08T15:29:11.636Z">
+<meta property="article:author" content="Neal">
+<meta property="article:tag" content="模块化">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/2016-05-12-01.png">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="Neal记录" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/img/snail.png">
+
+
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>python的模块化 | Neal记录</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: false,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.0.0"></head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/snail.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/"></a></h1>
+        </hgroup>
+
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/MIXIN/" rel="tag">MIXIN</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/base64/" rel="tag">base64</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/decode/" rel="tag">decode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/define/" rel="tag">define</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker%E5%9F%BA%E7%A1%80/" rel="tag">docker基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/encode/" rel="tag">encode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gitlab/" rel="tag">gitlab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gitlab%E9%83%A8%E7%BD%B2/" rel="tag">gitlab部署</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hash/" rel="tag">hash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/logs-del/" rel="tag">logs del</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/options/" rel="tag">options</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/property%E5%AE%9E%E7%8E%B0/" rel="tag">property实现</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python%E6%A0%87%E5%87%86%E5%BA%93%EF%BC%8Cos%E6%A8%A1%E5%9D%97/" rel="tag">python标准库，os模块</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell%EF%BC%8Cpython/" rel="tag">shell，python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tornado/" rel="tag">tornado</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/with%E8%AF%AD%E6%B3%95/" rel="tag">with语法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%87%BD%E6%95%B0/" rel="tag">函数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%97%E8%A1%A8%E8%A7%A3%E6%9E%90/" rel="tag">列表解析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%97%E8%A1%A8%EF%BC%8C%E5%85%83%E7%BB%84/" rel="tag">列表，元组</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8F%8C%E7%AB%AF%E9%98%9F%E5%88%97%EF%BC%8C%E7%8E%AF%E7%8A%B6%E9%98%9F%E5%88%97/" rel="tag">双端队列，环状队列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8F%8D%E5%B0%84/" rel="tag">反射</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%84%E7%90%86%E8%AF%B7%E6%B1%82/" rel="tag">处理请求</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B%EF%BC%8Cevent%E7%89%B9%E6%80%A7/" rel="tag">多线程，event特性</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BB%A7%E6%89%BF%EF%BC%8CMRO/" rel="tag">多继承，MRO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/" rel="tag">字符串</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%82%E5%B8%B8/" rel="tag">异常</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8F%8F%E8%BF%B0%E5%99%A8/" rel="tag">描述器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD%EF%BC%8C%E5%BE%AA%E7%8E%AF/" rel="tag">条件判断，循环</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%88/" rel="tag">栈</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%88%E8%BF%90%E7%94%A8%EF%BC%8C%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%A7%A3%E6%9E%90/" rel="tag">栈运用，表达式解析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A8%A1%E5%9D%97%E5%8C%96/" rel="tag">模块化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%B3%BB%E7%BB%9F%E5%88%9D%E5%A7%8B%E5%8C%96/" rel="tag">系统初始化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E7%A8%8B%EF%BC%8Ccondition/" rel="tag">线程，condition</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%A7%E6%89%BF/" rel="tag">继承</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E5%BB%BACA/" rel="tag">自建CA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A3%85%E9%A5%B0%E5%99%A8/" rel="tag">装饰器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A3%85%E9%A5%B0%E5%99%A8%EF%BC%8Cdecorator/" rel="tag">装饰器，decorator</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BF%94%E5%9B%9E%E8%AF%B7%E6%B1%82/" rel="tag">返回请求</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%85%8D%E7%BD%AE%E8%A7%A3%E6%9E%90/" rel="tag">配置解析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%93%BE%E8%A1%A8/" rel="tag">链表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%98%9F%E5%88%97/" rel="tag">队列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" rel="tag">面向对象</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%EF%BC%8C%E5%B0%81%E8%A3%85/" rel="tag">面向对象，封装</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95%EF%BC%8C%E7%B1%BB%E8%A3%85%E9%A5%B0%E5%99%A8%EF%BC%8C%E5%8D%95%E4%BE%8B/" rel="tag">魔术方法，类装饰器，单例</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">专注于linux</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页"></a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/snail.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页"></a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-2016-05-12-模块化" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/05/12/2016-05-12-%E6%A8%A1%E5%9D%97%E5%8C%96/" class="article-date">
+      <time datetime="2016-05-12T12:00:00.000Z" itemprop="datePublished">2016-05-12</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      python的模块化
+    </h1>
+  
+
+        <!-- 开始添加字数统计-->
+        
+         <!-- 添加完成 -->
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/python%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">python学习笔记</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%A8%A1%E5%9D%97%E5%8C%96/" rel="tag">模块化</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>python学习笔记之模块化</p>
+<a id="more"></a>
+<h2 id="模块化">模块化</h2>
+<h3 id="基本概念">基本概念</h3>
+<ul>
+<li>在python中，模块、包和库的概念并没有那么清晰</li>
+<li>一个文件就是一个模块，模块名就是文件名</li>
+<li>一个目录，包含了<code>__init__.py</code>就是一个包</li>
+<li>通常的当一个包或者若干包，包含一个<code>setup.py</code>就认为是一个可分发的库</li>
+</ul>
+<h3 id="导入模块">导入模块</h3>
+<p>导入模块有两种方式，如下：</p>
+<p>import <em>module</em></p>
+<p>from <em>module</em> import <em>submodule</em></p>
+<p>这两种导入方式的命名空间是不同的，以一个例子说明，如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">os.path.basename(<span class="string">&#x27;/usr/local/etc&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<pre><code>'etc'
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> os <span class="keyword">import</span> path</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">path.basename(<span class="string">&#x27;usr/local/etc&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<pre><code>'etc'
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> os.path <span class="keyword">import</span> basename</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">basename(<span class="string">&#x27;usr/local/etc&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<pre><code>'etc'
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os.path</span><br></pre></td></tr></table></figure>
+<p>上边的多种引用模块的方式都可以让我们使用<code>basename</code>，但各自的命名空间不一样。</p>
+<h3 id="重命名">重命名</h3>
+<p>引入模块的重命名用<code>as</code>语法，看下边的例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> os.path <span class="keyword">import</span> basename <span class="keyword">as</span> os_basename</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">os_basename(<span class="string">&#x27;/usr/local/etc&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<pre><code>'etc'
+</code></pre>
+<p>当然直接用<code>import</code>导入模块时也可以用<code>as</code>语法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys <span class="keyword">as</span> system</span><br></pre></td></tr></table></figure>
+<p>这样sys模块的名称被重命名为system了</p>
+<p>当一个模块被导入时，真正发生了什么呢？看下边的例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(pythv_3<span class="number">.5</span><span class="number">.1</span>) [root@nod3 learning]<span class="comment"># pwd</span></span><br><span class="line">/root/virtual_env/fourth_week/learning</span><br><span class="line"> </span><br><span class="line">(pythv_3<span class="number">.5</span><span class="number">.1</span>) [root@nod3 learning]<span class="comment"># ls</span></span><br><span class="line">foo.py  main.py</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">(pythv_3<span class="number">.5</span><span class="number">.1</span>) [root@nod3 learning]<span class="comment"># cat foo.py </span></span><br><span class="line"><span class="comment">#!/root/.pyenv/versions/pythv_3.5.1/bin/python</span></span><br><span class="line"><span class="comment"># _*_ coding:utf8 _*_</span></span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">print(<span class="string">&#x27;ha ha ha&#x27;</span>)</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bar</span>():</span></span><br><span class="line">    print(<span class="string">&#x27;i am bar in foo&#x27;</span>)</span><br><span class="line">    </span><br><span class="line">(pythv_3<span class="number">.5</span><span class="number">.1</span>) [root@nod3 learning]<span class="comment"># cat main.py </span></span><br><span class="line"><span class="comment">#!/root/.pyenv/versions/pythv_3.5.1/bin/python</span></span><br><span class="line"><span class="comment"># _*_ coding:utf8 _*_</span></span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="keyword">import</span> foo</span><br><span class="line"> </span><br><span class="line">foo.bar()</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(pythv_3<span class="number">.5</span><span class="number">.1</span>) [root@nod3 learning]<span class="comment"># python3 main.py </span></span><br><span class="line">ha ha ha</span><br><span class="line">i am bar <span class="keyword">in</span> foo</span><br></pre></td></tr></table></figure>
+<p>在<code>main.py</code>文件中用<code>import foo</code>的方式导入了<code>foo</code>模块，接着再调用了<code>foo</code>模块的<code>bar</code>函数，当执行<code>main.py</code>文件时，首先执行了<code>foo</code>模块的<code>print('ha ha ha')</code>语句，再执行了<code>bar</code>函数。</p>
+<p>这说明当导入一个模块时，其实是执行了此模块，所以当一个文件是以模块的形式被导入时，应避免此模块中有一些全局性的语句，比如这时的<code>print('ha ha ha')</code>语句。</p>
+<p>用<code>from foo import bar</code>的导入方式也是执行了<code>foo</code>文件，作如下验证：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(pythv_3<span class="number">.5</span><span class="number">.1</span>) [root@nod3 learning]<span class="comment"># cat main.py </span></span><br><span class="line"><span class="comment">#!/root/.pyenv/versions/pythv_3.5.1/bin/python</span></span><br><span class="line"><span class="comment"># _*_ coding:utf8 _*_</span></span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="keyword">from</span> foo <span class="keyword">import</span> bar</span><br><span class="line"> </span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(pythv_3<span class="number">.5</span><span class="number">.1</span>) [root@nod3 learning]<span class="comment"># python3 main.py </span></span><br><span class="line">ha ha ha</span><br></pre></td></tr></table></figure>
+<h2 id="相对导入和绝对导入">相对导入和绝对导入</h2>
+<p>在接下来的代码示例不再方便使用jumper来展示，开始用pycharm开发工具来展示代码。</p>
+<p>为了说明模块的相对导入和绝对导入，在pycharm中创建了一个<code>reference</code>包，包内有<code>bar.py</code>和<code>foo.py</code>两个模块，在<code>reference</code>包外有一个<code>main.py</code>模块。目录结构如下图：</p>
+<p><img src="/images/2016-05-12-01.png" alt="目录结构"></p>
+<p>各个模块中的内容如下：</p>
+<p><a target="_blank" rel="noopener" href="http://foo.py">foo.py</a>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fn</span>():</span></span><br><span class="line">    print(<span class="string">&#x27;i am in reference.foo&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="http://bar.py">bar.py</a>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> reference.foo <span class="keyword">import</span> fn</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bar</span>():</span></span><br><span class="line">    fn()</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="http://main.py">main.py</a>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">from reference.bar import bar</span><br><span class="line"> </span><br><span class="line">bar()</span><br></pre></td></tr></table></figure>
+<p>当运行<code>main.py</code>时会得到下边的输出内容：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">i am <span class="keyword">in</span> reference.foo</span><br></pre></td></tr></table></figure>
+<p>上边的<code>bar.py</code>和<code>main.py</code>模块中的<code>from</code>语句都是从包名<code>reference</code>这里开始引用的，这种引用就是<code>绝对引用</code>。</p>
+<p>因<code>foo.py</code>和<code>bar.py</code>两个模块都是在包<code>reference</code>内，所以<code>bar.py</code>里引用<code>foo</code>模块时可以使用相对引用的方式，如下：</p>
+<p><a target="_blank" rel="noopener" href="http://bar.py">bar.py</a>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> .foo <span class="keyword">import</span> fn</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bar</span>():</span></span><br><span class="line">    fn()</span><br></pre></td></tr></table></figure>
+<p>这样就是<code>相对引用</code>的方式。</p>
+<h3 id="循环导入">循环导入</h3>
+<p>在实际编码中要避免循环导入的，举一个例子说明什么是循环引入。</p>
+<p><a target="_blank" rel="noopener" href="http://xn--foo-cy0e153b.py">假如foo.py</a>、<a target="_blank" rel="noopener" href="http://bar.py">bar.py</a>、<a target="_blank" rel="noopener" href="http://main.py">main.py</a>，这三个模块都在同一个包内，各自的代码如下：</p>
+<p><a target="_blank" rel="noopener" href="http://foo.py">foo.py</a>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> bar <span class="keyword">import</span> fn <span class="keyword">as</span> bar</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fn</span>():</span></span><br><span class="line">    bar()</span><br><span class="line">    print(<span class="string">&#x27;i am foo&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="http://bar.py">bar.py</a>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> foo <span class="keyword">import</span> fn <span class="keyword">as</span> foo</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fn</span>():</span></span><br><span class="line">    foo()</span><br><span class="line">    print(<span class="string">&#x27;i am bar&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="http://main.py">main.py</a>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> foo <span class="keyword">import</span> fn</span><br><span class="line"> </span><br><span class="line">fn()</span><br></pre></td></tr></table></figure>
+<p>当运行main.py时，抛出以下异常：</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">&quot;D:/pythonlearning/fourth_week/reference/main.py&quot;</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    <span class="keyword">from</span> foo <span class="keyword">import</span> fn</span><br><span class="line">  File <span class="string">&quot;D:\pythonlearning\fourth_week\reference\foo.py&quot;</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    <span class="keyword">from</span> bar <span class="keyword">import</span> fn <span class="keyword">as</span> bar</span><br><span class="line">  File <span class="string">&quot;D:\pythonlearning\fourth_week\reference\bar.py&quot;</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    <span class="keyword">from</span> foo <span class="keyword">import</span> fn <span class="keyword">as</span> foo</span><br><span class="line">ImportError: cannot <span class="keyword">import</span> name <span class="string">&#x27;fn&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>上边的foo模块和bar模块就发生了循环引用的情况，这样在执行main.py时，解释器就会抛出上边的异常信息。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2016/05/12/2016-05-12-%E6%A8%A1%E5%9D%97%E5%8C%96/">python的模块化</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页"></a></p>
+        <p><span>发布时间:</span>2016-05-12, 20:00:00</p>
+        <p><span>最后更新:</span>2020-08-08, 23:29:11</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2016/05/12/2016-05-12-%E6%A8%A1%E5%9D%97%E5%8C%96/" title="python的模块化">http://yoursite.com/2016/05/12/2016-05-12-%E6%A8%A1%E5%9D%97%E5%8C%96/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2016/05/12/2016-05-12-%E6%A8%A1%E5%9D%97%E5%8C%96/　　作者: " title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2016/05/12/2016-05-12-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E9%93%BE%E8%A1%A8/">
+                    python数据结构-链表
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2016/05/12/2016-05-12-%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/">
+                    python异常处理
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9D%97%E5%8C%96"><span class="toc-number">1.</span> <span class="toc-text">模块化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">1.1.</span> <span class="toc-text">基本概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%BC%E5%85%A5%E6%A8%A1%E5%9D%97"><span class="toc-number">1.2.</span> <span class="toc-text">导入模块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%87%8D%E5%91%BD%E5%90%8D"><span class="toc-number">1.3.</span> <span class="toc-text">重命名</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%AF%B9%E5%AF%BC%E5%85%A5%E5%92%8C%E7%BB%9D%E5%AF%B9%E5%AF%BC%E5%85%A5"><span class="toc-number">2.</span> <span class="toc-text">相对导入和绝对导入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BE%AA%E7%8E%AF%E5%AF%BC%E5%85%A5"><span class="toc-number">2.1.</span> <span class="toc-text">循环导入</span></a></li></ol></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"python的模块化　| Neal记录　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2016/05/12/2016-05-12-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E9%93%BE%E8%A1%A8/" title="上一篇: python数据结构-链表">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2016/05/12/2016-05-12-%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" title="下一篇: python异常处理">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2020/08/08/test-md/">test.md</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/15/2016-09-15-os%E6%A8%A1%E5%9D%97%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95%E6%95%B4%E7%90%86/">os模块常用方法整理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/14/2016-09-14-%E5%AD%97%E7%AC%A6%E7%9A%84%E7%BC%96%E7%A0%81%E4%B8%8E%E8%A7%A3%E7%A0%81/">python中的编码与解码</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/13/2016-09-13-tornado%E9%85%8D%E7%BD%AE%E8%A7%A3%E6%9E%90/">tornado配置解析</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/10/2016-09-10-tornado%E5%AF%B9http%E8%AF%B7%E6%B1%82%E7%9A%84%E8%BF%94%E5%9B%9E/">tornado怎样返回信息</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/08/2016-09-07-tornado-http%E5%A4%84%E7%90%86%E8%AF%B7%E6%B1%82%E6%8A%A5%E6%96%87/">tornado处理请求报文</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/21/2016-08-21-%E7%BA%BF%E7%A8%8B%E7%9A%84condition%E7%89%B9%E6%80%A7/">python线程中的condition特性</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/2016-08-14-%E7%BA%BF%E7%A8%8B%E7%9A%84daemon%E4%B8%8Ejoin%E7%89%B9%E6%80%A7/">线程的daemon与join特性</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/2016-08-14-%E7%BA%BF%E7%A8%8B%E7%9A%84event%E7%89%B9%E6%80%A7/">python多线程间通信机制-event</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/24/docker/2016-06-24-docker%E5%9F%BA%E7%A1%80/">docker基础</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/16/2016-05-16-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%8F%8C%E7%AB%AF%E9%98%9F%E5%88%97-%E7%8E%AF%E7%8A%B6%E9%98%9F%E5%88%97/">python数据结构-双端队列-环状队列</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/16/2016-05-16-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-hash/">python数据结构-hash</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/15/2016-05-15-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%8D%95%E7%AB%AF%E9%98%9F%E5%88%97/">python数据结构之队列</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/14/2016-05-14-%E6%A0%88%E8%BF%90%E7%94%A8-%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%A7%A3%E6%9E%90/">栈的运用-表达式解析</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/14/2016-05-14-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%88/">python数据结构之栈</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/12/2016-05-12-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E9%93%BE%E8%A1%A8/">python数据结构-链表</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/12/2016-05-12-%E6%A8%A1%E5%9D%97%E5%8C%96/">python的模块化</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/12/2016-05-12-%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/">python异常处理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/10/2016-05-10-property%E7%9A%84%E5%AE%9E%E7%8E%B0/">python的property实现原理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/09/2016-05-09-%E6%8F%8F%E8%BF%B0%E5%99%A8/">python描述器</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/09/2016-05-09-with%E8%AF%AD%E6%B3%95/">python的with语法</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/08/2016-05-08-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1-%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95-%E7%B1%BB%E8%A3%85%E9%A5%B0%E5%99%A8-%E5%8D%95%E4%BE%8B/">python的魔术方法、类装饰器、单例</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/08/2016-05-08-%E5%8F%8D%E5%B0%84/">python反射</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/07/2016-05-07-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1-%E5%A4%9A%E7%BB%A7%E6%89%BF-MRO-MIXIN/">python面向对象的多继承-MIXIN</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/07/2016-05-07-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1-%E7%BB%A7%E6%89%BF/">python面向对象的继承</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/06/2016-05-06-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1-%E5%B0%81%E8%A3%85-property/">python面向对象-封装</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/06/2016-05-06-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1-%E5%9F%BA%E7%A1%80-%E5%B0%81%E8%A3%85/">python面向对象基础理论</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/05/2016-05-05-%E5%B8%A6%E5%8F%82%E6%95%B0%E7%9A%84%E8%A3%85%E9%A5%B0%E5%99%A8/">python带参数的装饰器</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/04/2016-05-04-%E8%A3%85%E9%A5%B0%E5%99%A8/">python装饰器</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/03/2016-05-03-%E5%88%97%E8%A1%A8%E8%A7%A3%E6%9E%90/">python列表解析</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/01/2016-05-01-%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%93%8D%E4%BD%9C/">python的字符串操作</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/30/2016-04-30-built-CA-and-certificate/">自建CA及证颁发证书shell脚本</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/07/2016-04-07-python-learn-decorator/">python装饰器</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/06/2016-04-06-deploy-gitlab-use-shell/">使用shell部署gitlab</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/28/2016-03-28-deploy-redis-cluster-use-ansible/">ansible playbook定义redis-cluster</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/24/2016-03-24-system-initialization-use-ansible/">ansible编写系统初始化playbook</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/18/2016-03-18-text-process/">批量替换文件中指定字符串</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/17/2016-03-17-python-learn-function/">python函数</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/16/2016-03-16-python-learn-list-and-tuple/">python的列表与元组</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/16/2016-03-16-python-learn-conditional-and-circulation/">python条件判断及循环语句</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/09/2016-03-09-make-nginx-template/">nginx编译安装并引入优秀的第三方模块</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/03/2016-03-02-logs-del-shell-v3/">日志数据删除脚本v3</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/03/2016-03-03-deploy-gitlib/">shell脚本部署gitlab环境</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/02/2016-03-02-logs-del-shell-v2/">日志数据删除脚本v1</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/02/2016-03-02-logs-del-shell-v1/">日志数据删除脚本v1</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2020 Neal
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
